@@ -26,17 +26,17 @@ def tick(time1=''):
 
 
 root = tk.Tk()
-company = tk.Label(
+appname = tk.Label(
     root,
-    font=('arial', 200, 'bold'),
-    bg='royalblue4',
+    font=('freesans', 200, 'bold'),
+    bg='gray13',
     fg='white')
-company.config(text='NetAcquire')
-company.pack(fill='both', expand=1)
+appname.config(text='Northwest Clock')
+appname.pack(fill='both', expand=1)
 clock = tk.Label(
     root,
-    font=('arial', 200, 'bold'),
-    bg='royalblue4',
+    font=('freesans', 200, 'bold'),
+    bg='gray13',
     fg='white')
 clock.pack(fill='both', expand=1)
 tick()
