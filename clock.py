@@ -3,6 +3,7 @@ use Tkinter to show a digital clock
 tested with Python27 and Python33
 '''
 import time
+from time import gmtime
 try:
     # Python2
     import Tkinter as tk
@@ -13,7 +14,8 @@ except ImportError:
 
 def tick(time1=''):
     # get the current local time from the PC
-    time2 = time.strftime('%H:%M:%S')
+    # utc_time = time.gmtime()
+    time2 = time.strftime('%B %d %Y \n%H:%M:%S', gmtime())
     # if time string has changed, update it
     if time2 != time1:
         time1 = time2
@@ -24,7 +26,18 @@ def tick(time1=''):
 
 
 root = tk.Tk()
-clock = tk.Label(root, font=('arial', 72, 'bold'), bg='lightblue', fg='white')
+company = tk.Label(
+    root,
+    font=('arial', 200, 'bold'),
+    bg='royalblue4',
+    fg='white')
+company.config(text='NetAcquire')
+company.pack(fill='both', expand=1)
+clock = tk.Label(
+    root,
+    font=('arial', 200, 'bold'),
+    bg='royalblue4',
+    fg='white')
 clock.pack(fill='both', expand=1)
 tick()
 root.mainloop()
