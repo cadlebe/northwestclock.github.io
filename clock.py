@@ -4,6 +4,7 @@ tested with Python27 and Python33
 '''
 import time
 from time import gmtime
+import pyowm
 try:
     # Python2
     import Tkinter as tk
@@ -24,7 +25,25 @@ def tick(time1=''):
     # to update the time display as needed
     clock.after(200, tick)
 
+
+def tempcheck(temp1=''):
+    owm = pyowm.OWM(API_key='8a3f8610bb7985541149717900f43011')
+    observation = owm.weather_at_place('Seattle, US')
+    w = observation.get_weather()
+    currenttemp = w.get_temperature('fahrenheit')
+    temp2 = currenttemp['temp']
+
+    if temp2 != temp1:
+        temp1 = temp2
+        outtemp.config(text=str(int(temp1)) + ' F')
+
+
+    outtemp.after(300000, tempcheck)
+
+
 root = tk.Tk()
+
+# Set the window title bar text
 root.wm_title('Northwest Clock')
 appname = tk.Label(
     root,
@@ -40,5 +59,13 @@ clock = tk.Label(
     bg='#212121',
     fg='#cecece')
 clock.pack(fill='both', expand=1)
+outtemp = tk.Label(
+    root,
+    font=('freesans', 100, 'bold'),
+    bg='#212121',
+    fg='#cecece'
+)
+outtemp.pack(fill='both', expand=1)
+tempcheck()
 tick()
 root.mainloop()
