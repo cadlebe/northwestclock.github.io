@@ -15,7 +15,7 @@ except ImportError:
 def tick(time1=''):
     # get the current local time from the PC
     # utc_time = time.gmtime()
-    time2 = time.strftime('%B %d %Y \n%H:%M:%S', gmtime())
+    time2 = time.strftime('%B %d %Y \n%H:%M:%S UTC', gmtime())
     # if time string has changed, update it
     if time2 != time1:
         time1 = time2
@@ -24,20 +24,21 @@ def tick(time1=''):
     # to update the time display as needed
     clock.after(200, tick)
 
-
 root = tk.Tk()
+root.wm_title('Northwest Clock')
 appname = tk.Label(
     root,
-    font=('freesans', 200, 'bold'),
-    bg='gray13',
-    fg='white')
+    font=('TakaoPGothic', 125,),
+    bg='#00541c',
+    fg='#141414',
+    anchor='w',)
 appname.config(text='Northwest Clock')
 appname.pack(fill='both', expand=1)
 clock = tk.Label(
     root,
     font=('freesans', 200, 'bold'),
-    bg='gray13',
-    fg='white')
+    bg='#212121',
+    fg='#cecece')
 clock.pack(fill='both', expand=1)
 tick()
 root.mainloop()
