@@ -14,8 +14,7 @@ except ImportError:
 
 
 def tick(time1=''):
-    # get the current local time from the PC
-    # utc_time = time.gmtime()
+    # get UTC time
     time2 = time.strftime('%B %d %Y \n%H:%M:%S UTC', gmtime())
     # if time string has changed, update it
     if time2 != time1:
@@ -27,7 +26,9 @@ def tick(time1=''):
 
 
 def tempcheck(temp1=''):
+    # API key for Open Weather Map
     owm = pyowm.OWM(API_key='8a3f8610bb7985541149717900f43011')
+    # Get weather for seattle, all of it
     observation = owm.weather_at_place('Seattle, US')
     w = observation.get_weather()
     currenttemp = w.get_temperature('fahrenheit')
