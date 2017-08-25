@@ -1,14 +1,6 @@
-from distutils.core import setup
+from cx_Freeze import setup, Executable
 
-setup(
-    name='NWClock',
-    version='0.1.0',
-    packages=['clock'],
-    license='MIT License',
-    long_description=open('README.txt').read(),
-    author='Bret Cadle',
-    author_email='contactme@bretcadle.com',
-    maintainer='Bret Cadle',
-    maintainer_email='contactme@bretcadle.com',
-    url='https://bitbucket.org/cadlebe/nwclock'
-)
+setup(name="nwclock",
+      version="0.1.0",
+      description="Simple clock that displays UTC, date, and temp.",
+      executables=[Executable("src/clock.py")])
