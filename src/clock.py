@@ -37,6 +37,7 @@ except ImportError:
     # Python3
     import tkinter as tk
 
+from tkinter import *
 
 def tick(time1=''):
     # get UTC time
@@ -69,6 +70,17 @@ def tempcheck(temp1=''):
 
 root = tk.Tk()
 
+# Sample button donothing
+def donothing():
+    filewin = Toplevel(root)
+    button = Button(filewin, text="Do nothing button")
+    button.pack()
+# Settings menu button
+def settings():
+    filewin = Toplevel(root)
+    button = Button(filewin, Text="Settings")
+    button.pack()
+
 # Set the window title bar text
 root.wm_title('Northwest Clock')
 appname = tk.Label(
@@ -78,6 +90,7 @@ appname = tk.Label(
     fg='#141414',
     anchor='w',)
 appname.config(text='Northwest Clock')
+# Set clock label text
 appname.pack(fill='both', expand=1)
 clock = tk.Label(
     root,
@@ -85,6 +98,7 @@ clock = tk.Label(
     bg='#212121',
     fg='#cecece')
 clock.pack(fill='both', expand=1)
+# Set weather label text
 outtemp = tk.Label(
     root,
     font=('freesans', 100, 'bold'),
@@ -92,6 +106,39 @@ outtemp = tk.Label(
     fg='#cecece'
 )
 outtemp.pack(fill='both', expand=1)
+# create top menu
+menubar = Menu(root)
+filemenu = Menu(menubar, tearoff=0)
+filemenu.add_command(label="New", command=donothing)
+filemenu.add_command(label="Open", command=donothing)
+filemenu.add_command(label="Save", command=donothing)
+filemenu.add_command(label="Save as...", command=donothing)
+filemenu.add_command(label="Close", command=donothing)
+
+filemenu.add_separator()
+
+filemenu.add_command(label="Exit", command=root.quit)
+menubar.add_cascade(label="File", menu=filemenu)
+editmenu = Menu(menubar, tearoff=0)
+editmenu.add_command(label="Undo", command=donothing)
+
+editmenu.add_separator()
+
+editmenu.add_command(label="Cut", command=donothing)
+editmenu.add_command(label="Copy", command=donothing)
+editmenu.add_command(label="Paste", command=donothing)
+editmenu.add_command(label="Delete", command=donothing)
+editmenu.add_command(label="Select All", command=donothing)
+editmenu.add_command(label="Settings", command=settings)
+
+menubar.add_cascade(label="Edit", menu=editmenu)
+helpmenu = Menu(menubar, tearoff=0)
+helpmenu.add_command(label="Help Index", command=donothing)
+helpmenu.add_command(label="About...", command=donothing)
+menubar.add_cascade(label="Help", menu=helpmenu)
+
+root.config(menu=menubar)
+
 tempcheck()
 tick()
 root.mainloop()
