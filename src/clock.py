@@ -40,7 +40,7 @@ except ImportError:
 
 def tick(time1=''):
     # get UTC time
-    time2 = time.strftime('%B %d %Y \n%H:%M:%S UTC', gmtime())
+    time2 = time.strftime('%H:%M:%S UTC', gmtime())
     # if time string has changed, update it
     if time2 != time1:
         time1 = time2
@@ -48,6 +48,19 @@ def tick(time1=''):
     # calls itself every 200 milliseconds
     # to update the time display as needed
     clock.after(200, tick)
+
+
+def UTCdate(date1=''):
+    # get Date at UTC
+    date2 = time.strftime('%B %d %Y', gmtime())
+    # if date string has changed, update it
+    if date2 != date1:
+        date1 = date2
+        date.config(text=date2)
+    # calls itself every n milliseconds
+    # to update the date display as needed
+    print(date2)
+    date.after(200, tick)
 
 
 def tempcheck(temp1=''):
@@ -79,6 +92,12 @@ appname = tk.Label(
     anchor='w',)
 appname.config(text='Northwest Clock')
 appname.pack(fill='both', expand=1)
+date = tk.Label(
+    root,
+    font=('freesans', 85, 'bold'),
+    bg='#212121',
+    fg='#cecece')
+date.pack(fill='both', expand=1)
 clock = tk.Label(
     root,
     font=('freesans', 200, 'bold'),
@@ -93,5 +112,6 @@ outtemp = tk.Label(
 )
 outtemp.pack(fill='both', expand=1)
 tempcheck()
+UTCdate()
 tick()
 root.mainloop()
