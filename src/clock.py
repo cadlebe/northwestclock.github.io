@@ -53,11 +53,10 @@ clockfontsize = 50
 
 def tick(time1=''):
     # get UTC time
-    try:
-        time2 = time.strftime('%B %d %Y \n%H:%M:%S UTC', gmtime())
-        # if time string has changed, update it
-        if time2 != time1:
-            time1 = time2
+    time2 = time.strftime('%H:%M:%S UTC', gmtime())
+    # if time string has changed, update it
+    if time2 != time1:
+        time1 = time2
         clock.config(text=time2)
     except:
         time2 = "no"
@@ -65,6 +64,19 @@ def tick(time1=''):
     # calls itself every 200 milliseconds
     # to update the time display as needed
     clock.after(200, tick)
+
+
+def UTCdate(date1=''):
+    # get Date at UTC
+    date2 = time.strftime('%B %d %Y', gmtime())
+    # if date string has changed, update it
+    if date2 != date1:
+        date1 = date2
+        date.config(text=date2)
+    # calls itself every n milliseconds
+    # to update the date display as needed
+    print(date2)
+    date.after(200, tick)
 
 
 def tempcheck(temp1=''):
@@ -130,6 +142,12 @@ appname = tk.Label(
 appname.config(text='Northwest Clock')
 # Set clock label text
 appname.pack(fill='both', expand=1)
+date = tk.Label(
+    root,
+    font=('freesans', 85, 'bold'),
+    bg='#212121',
+    fg='#cecece')
+date.pack(fill='both', expand=1)
 clock = tk.Label(
     root,
     font=('freesans', clockfontsize, 'bold'),
@@ -162,5 +180,6 @@ menubar.add_cascade(label="Help", menu=helpmenu)
 root.config(menu=menubar)
 
 tempcheck()
+UTCdate()
 tick()
 root.mainloop()
