@@ -21,15 +21,26 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-import six
-import packaging
-import packaging.version
-import packaging.specifiers
-import packaging.requirements
-import appdirs
+'''
+TODO:
+    Added comments to labels
+    Added error handling for weather check and time check
+    Adding menu buttons
+'''
+
+import socket
 import time
 from time import gmtime
+from tkinter import *
+
+import appdirs
+import packaging
+import packaging.requirements
+import packaging.specifiers
+import packaging.version
 import pyowm
+import six
+
 try:
     # Python2
     import Tkinter as tk
@@ -37,55 +48,82 @@ except ImportError:
     # Python3
     import tkinter as tk
 
-from tkinter import *
+
+clockfontsize = 50
 
 def tick(time1=''):
     # get UTC time
-    time2 = time.strftime('%B %d %Y \n%H:%M:%S UTC', gmtime())
-    # if time string has changed, update it
-    if time2 != time1:
-        time1 = time2
+    try:
+        time2 = time.strftime('%B %d %Y \n%H:%M:%S UTC', gmtime())
+        # if time string has changed, update it
+        if time2 != time1:
+            time1 = time2
         clock.config(text=time2)
+    except:
+        time2 = "no"
+        clock.config(Text=time2)
     # calls itself every 200 milliseconds
     # to update the time display as needed
     clock.after(200, tick)
 
 
 def tempcheck(temp1=''):
-    # API key for Open Weather Map
-    owm = pyowm.OWM(API_key='8a3f8610bb7985541149717900f43011')
-    # Get weather for seattle, all of it
-    observation = owm.weather_at_place('Seattle, US')
-    w = observation.get_weather()
-    currenttemp = w.get_temperature('fahrenheit')
-    temp2 = currenttemp['temp']
+    try:
+        # API key for Open Weather Map
+        owm = pyowm.OWM(API_key='8a3f8610bb7985541149717900f43011')
+        # Get weather for seattle, all of it
+        observation = owm.weather_at_place('Seattle, US')
+        w = observation.get_weather()
+        currenttemp = w.get_temperature('fahrenheit')
+        temp2 = currenttemp['temp']
 
-    if temp2 != temp1:
-        temp1 = temp2
-        outtemp.config(text=str(int(temp1)) + ' F')
+        if temp2 != temp1:
+            temp1 = temp2
+            outtemp.config(text=str(int(temp1)) + ' F')
+    except:
+        error = "network error"
+        outtemp.config(text=error)
 
-
-    outtemp.after(300000, tempcheck)
+    outtemp.after(10000, tempcheck)
 
 
 root = tk.Tk()
+
 
 # Sample button donothing
 def donothing():
     filewin = Toplevel(root)
     button = Button(filewin, text="Do nothing button")
     button.pack()
+
+
 # Settings menu button
 def settings():
-    filewin = Toplevel(root)
-    button = Button(filewin, Text="Settings")
-    button.pack()
+    win = Toplevel(root)
+    win.wm_title('Settings')
+
+    def setclockfont():
+        newfontsize = clockfontentry.get()
+        clock.config(font=(
+            'TakaoPGothic',
+            newfontsize,))
+
+    clockfontsizelabel = tk.Label(win, text='Clock fontsize (default 50)')
+    clockfontsizelabel.grid(row=0, column=0)
+
+    clockfontentry = Entry(win)
+
+    clockfontconfirm = tk.Button(win, text='confirm', command=setclockfont)
+
+    clockfontentry.grid(row=0, column=1)
+    clockfontconfirm.grid(row=0, column=2)
+
 
 # Set the window title bar text
 root.wm_title('Northwest Clock')
 appname = tk.Label(
     root,
-    font=('TakaoPGothic', 125,),
+    font=('TakaoPGothic', 50,),
     bg='#00541c',
     fg='#141414',
     anchor='w',)
@@ -94,14 +132,14 @@ appname.config(text='Northwest Clock')
 appname.pack(fill='both', expand=1)
 clock = tk.Label(
     root,
-    font=('freesans', 200, 'bold'),
+    font=('freesans', clockfontsize, 'bold'),
     bg='#212121',
     fg='#cecece')
 clock.pack(fill='both', expand=1)
 # Set weather label text
 outtemp = tk.Label(
     root,
-    font=('freesans', 100, 'bold'),
+    font=('freesans', 50, 'bold'),
     bg='#212121',
     fg='#cecece'
 )
@@ -109,31 +147,15 @@ outtemp.pack(fill='both', expand=1)
 # create top menu
 menubar = Menu(root)
 filemenu = Menu(menubar, tearoff=0)
-filemenu.add_command(label="New", command=donothing)
-filemenu.add_command(label="Open", command=donothing)
-filemenu.add_command(label="Save", command=donothing)
-filemenu.add_command(label="Save as...", command=donothing)
-filemenu.add_command(label="Close", command=donothing)
-
-filemenu.add_separator()
-
 filemenu.add_command(label="Exit", command=root.quit)
 menubar.add_cascade(label="File", menu=filemenu)
 editmenu = Menu(menubar, tearoff=0)
-editmenu.add_command(label="Undo", command=donothing)
 
-editmenu.add_separator()
-
-editmenu.add_command(label="Cut", command=donothing)
-editmenu.add_command(label="Copy", command=donothing)
-editmenu.add_command(label="Paste", command=donothing)
-editmenu.add_command(label="Delete", command=donothing)
-editmenu.add_command(label="Select All", command=donothing)
 editmenu.add_command(label="Settings", command=settings)
 
 menubar.add_cascade(label="Edit", menu=editmenu)
 helpmenu = Menu(menubar, tearoff=0)
-helpmenu.add_command(label="Help Index", command=donothing)
+
 helpmenu.add_command(label="About...", command=donothing)
 menubar.add_cascade(label="Help", menu=helpmenu)
 
