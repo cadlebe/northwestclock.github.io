@@ -1,3 +1,22 @@
+import socket
+import time
+from time import gmtime
+from tkinter import *
+
+import appdirs
+import packaging
+import packaging.requirements
+import packaging.specifiers
+import packaging.version
+import pyowm
+import six
+
+try:
+    # Python2
+    import Tkinter as tk
+except ImportError:
+    # Python3
+    import tkinter as tk
 ''' MIT License
 
 Copyright (c) 2017 Bret Cadle
@@ -21,36 +40,10 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
-'''
-TODO:
-    Added comments to labels
-    Added error handling for weather check and time check
-    Adding menu buttons
-'''
-
-import socket
-import time
-from time import gmtime
-from tkinter import *
-
-import appdirs
-import packaging
-import packaging.requirements
-import packaging.specifiers
-import packaging.version
-import pyowm
-import six
-
-try:
-    # Python2
-    import Tkinter as tk
-except ImportError:
-    # Python3
-    import tkinter as tk
-
 datefontsize = 50
 clockfontsize = 50
 weatherfontsize = 50
+
 
 def tick(time1=''):
     try:
