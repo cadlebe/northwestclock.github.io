@@ -48,16 +48,18 @@ except ImportError:
     # Python3
     import tkinter as tk
 
-
+datefontsize = 50
 clockfontsize = 50
+weatherfontsize = 50
 
 def tick(time1=''):
-    # get UTC time
-    time2 = time.strftime('%H:%M:%S UTC', gmtime())
-    # if time string has changed, update it
-    if time2 != time1:
-        time1 = time2
-        clock.config(text=time2)
+    try:
+        # get UTC time
+        time2 = time.strftime('%H:%M:%S UTC', gmtime())
+        # if time string has changed, update it
+        if time2 != time1:
+            time1 = time2
+            clock.config(text=time2)
     except:
         time2 = "no"
         clock.config(Text=time2)
@@ -91,12 +93,12 @@ def tempcheck(temp1=''):
 
         if temp2 != temp1:
             temp1 = temp2
-            outtemp.config(text=str(int(temp1)) + ' F')
+            weather.config(text=str(int(temp1)) + ' F')
     except:
         error = "network error"
-        outtemp.config(text=error)
+        weather.config(text=error)
 
-    outtemp.after(10000, tempcheck)
+    weather.after(10000, tempcheck)
 
 
 root = tk.Tk()
@@ -117,18 +119,53 @@ def settings():
     def setclockfont():
         newfontsize = clockfontentry.get()
         clock.config(font=(
-            'TakaoPGothic',
-            newfontsize,))
+            'freesans',
+            newfontsize, 'bold'))
 
-    clockfontsizelabel = tk.Label(win, text='Clock fontsize (default 50)')
+
+    def setdatefont():
+        newfontsize = datefontentry.get()
+        date.config(font=(
+            'freesans',
+            newfontsize, 'bold'))
+
+
+    def setweatherfont():
+        newfontsize = weatherfontentry.get()
+        weather.config(font=(
+            'freesans',
+            newfontsize, 'bold'))
+
+    clockfontsizelabel = tk.Label(
+        win,
+        text='Clock fontsize (default 50)',
+        anchor=E)
     clockfontsizelabel.grid(row=0, column=0)
 
+    datefontsizelabel = tk.Label(win,
+        text='Date fontsize (default 50)',
+        anchor=E)
+    datefontsizelabel.grid(row=1, column=0)
+
+    weatherfontsizelabel = tk.Label(win,
+        text='Weather fontsize (default 50)',
+        anchor=E,)
+    weatherfontsizelabel.grid(row=2, column=0)
+
     clockfontentry = Entry(win)
+    datefontentry = Entry(win)
+    weatherfontentry = Entry(win)
 
     clockfontconfirm = tk.Button(win, text='confirm', command=setclockfont)
+    datefontconfirm = tk.Button(win, text='confirm', command=setdatefont)
+    weatherfontconfirm = tk.Button(win, text='confirm', command=setweatherfont)
 
     clockfontentry.grid(row=0, column=1)
     clockfontconfirm.grid(row=0, column=2)
+    datefontentry.grid(row=1, column=1)
+    datefontconfirm.grid(row=1, column=2)
+    weatherfontentry.grid(row=2, column=1)
+    weatherfontconfirm.grid(row=2, column=2)
 
 
 # Set the window title bar text
@@ -144,7 +181,7 @@ appname.config(text='Northwest Clock')
 appname.pack(fill='both', expand=1)
 date = tk.Label(
     root,
-    font=('freesans', 85, 'bold'),
+    font=('freesans', datefontsize, 'bold'),
     bg='#212121',
     fg='#cecece')
 date.pack(fill='both', expand=1)
@@ -155,13 +192,13 @@ clock = tk.Label(
     fg='#cecece')
 clock.pack(fill='both', expand=1)
 # Set weather label text
-outtemp = tk.Label(
+weather = tk.Label(
     root,
-    font=('freesans', 50, 'bold'),
+    font=('freesans', weatherfontsize, 'bold'),
     bg='#212121',
     fg='#cecece'
 )
-outtemp.pack(fill='both', expand=1)
+weather.pack(fill='both', expand=1)
 # create top menu
 menubar = Menu(root)
 filemenu = Menu(menubar, tearoff=0)
