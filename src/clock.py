@@ -71,7 +71,7 @@ def UTCdate(date1=''):
     # calls itself every n milliseconds
     # to update the date display as needed
     print(date2)
-    date.after(200, tick)
+    date.after(200, UTCdate)
 
 
 def tempcheck(temp1=''):
