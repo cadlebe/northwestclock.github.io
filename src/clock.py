@@ -40,6 +40,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 '''
 
+# Default label attributes
 datefontsize = 50
 clockfontsize = 50
 weatherfontsize = 50
@@ -114,13 +115,11 @@ def settings():
             'freesans',
             newfontsize, 'bold'))
 
-
     def setdatefont():
         newfontsize = datefontentry.get()
         date.config(font=(
             'freesans',
             newfontsize, 'bold'))
-
 
     def setweatherfont():
         newfontsize = weatherfontentry.get()
@@ -128,36 +127,44 @@ def settings():
             'freesans',
             newfontsize, 'bold'))
 
+    datefontsizelabel = tk.Label(
+        win,
+        text='Date fontsize (default 50)',
+        anchor=E)
+    datefontsizelabel.grid(row=0, column=0)
+
     clockfontsizelabel = tk.Label(
         win,
         text='Clock fontsize (default 50)',
         anchor=E)
-    clockfontsizelabel.grid(row=0, column=0)
+    clockfontsizelabel.grid(row=1, column=0)
 
-    datefontsizelabel = tk.Label(win,
-        text='Date fontsize (default 50)',
-        anchor=E)
-    datefontsizelabel.grid(row=1, column=0)
-
-    weatherfontsizelabel = tk.Label(win,
+    weatherfontsizelabel = tk.Label(
+        win,
         text='Weather fontsize (default 50)',
         anchor=E,)
     weatherfontsizelabel.grid(row=2, column=0)
 
-    clockfontentry = Entry(win)
     datefontentry = Entry(win)
+    clockfontentry = Entry(win)
     weatherfontentry = Entry(win)
 
-    clockfontconfirm = tk.Button(win, text='confirm', command=setclockfont)
     datefontconfirm = tk.Button(win, text='confirm', command=setdatefont)
+    clockfontconfirm = tk.Button(win, text='confirm', command=setclockfont)
     weatherfontconfirm = tk.Button(win, text='confirm', command=setweatherfont)
 
-    clockfontentry.grid(row=0, column=1)
-    clockfontconfirm.grid(row=0, column=2)
-    datefontentry.grid(row=1, column=1)
-    datefontconfirm.grid(row=1, column=2)
+    datefontentry.grid(row=0, column=1)
+    datefontconfirm.grid(row=0, column=2)
+    clockfontentry.grid(row=1, column=1)
+    clockfontconfirm.grid(row=1, column=2)
     weatherfontentry.grid(row=2, column=1)
     weatherfontconfirm.grid(row=2, column=2)
+
+    s1 = tk.Separator(win, orient=HORIZONTAL)
+    s1.grid(row=3)
+
+    # TODO: consider using a tabbed notebook here when settings page
+    # gets a little too full
 
 
 # Set the window title bar text

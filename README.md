@@ -10,24 +10,13 @@ What you need on your system in order to install:
 - Preferably Ubuntu 12.04 or later
 - At least a Core i3 processor
 - 256mb RAM
-- Python 3.5 or later
-- Various packages that the build step with show as an error
-- cx_freeze
 
 ## Installing
 
-1. Extract the .zip file to any location that you have read-write access
-2. Navigate to the newly extracted directory
-3. Open a terminal inside directory
-4. Type:
-    ```python3 setup.py build```
-    or (if you have python 3.5 or later as your only installation):
-    ```python setup.py build```
-    *If there are any errors for missing packages then install those packages, alternatively update your setup and install cx_freeze*
-5. Upon succesful completion of the build navigate to /build/exe.linux-***-3.5/ and type:
-    ```./clock.py```
-    and the clock should be up and running.
-6. Repeat steps 4 and 5 until you no longer error and the clock comes up
+1. Download the dist/clock file for your operating system
+2. Extract the .zip file or file to any location that you have read-write access
+3. Navigate to the newly extracted directory
+4. Double-Click on clock application
 
 #Built with
 
@@ -35,12 +24,12 @@ What you need on your system in order to install:
 - [TKinter](https://wiki.python.org/moin/TkInter)
 - [Open Weather Map](https://openweathermap.org)
 - [Python3.5](https://www.python.org)
-- [CX_Freeze](https://anthony-tuininga.github.io/cx_Freeze/)
+- [pyinstaller](http://pyinstaller.readthedocs.io/en/stable/index.html#)
 - [Ubuntu](https://www.ubuntu.com)
 
 #Contributing
 
-I have not yet come up with a code of conduct for contributing, though if you would like to please send a pull request as usual.
+I have not yet come up with a code of conduct for contributing, though if you would like to please send a pull request as usual or email me directly with any ideas.
 
 #Versioning
 
@@ -77,6 +66,7 @@ I'll update this section in the coming weeks as I have gotten an immense amount 
 - Ability to use an image as the background
 
 #Workarounds
+##(NOTE: These workarounds only work if you download and build the source code using pyinstaller)
 
 ###Location
 To modify the location you must change:
