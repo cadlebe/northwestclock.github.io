@@ -76,6 +76,7 @@ root = tk.Tk()
 
 # Sample button donothing
 def donothing():
+    """ Placeholder for buttons that currently "do nothing" """
     filewin = Toplevel(root)
     button = Button(filewin, text="Do nothing button")
     button.pack()
@@ -83,22 +84,27 @@ def donothing():
 
 # Settings menu button
 def settings():
+    """ Opens settings window """
     win = Toplevel(root)
     win.wm_title('Settings')
 
+    # Define how each button behaves, maybe refactor this later
     def setclockfont():
+        """ Assigns new font size to clock label """
         newfontsize = clockfontentry.get()
         clock.config(font=(
             'freesans',
             newfontsize, 'bold'))
 
     def setdatefont():
+        """ Assigns new font size to date label """
         newfontsize = datefontentry.get()
         date.config(font=(
             'freesans',
             newfontsize, 'bold'))
 
     def setweatherfont():
+        """ Assigns new font size to weather label """
         newfontsize = weatherfontentry.get()
         weather.config(font=(
             'freesans',
