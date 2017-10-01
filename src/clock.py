@@ -1,4 +1,3 @@
-import socket
 import time
 from time import gmtime
 from tkinter import *
@@ -17,52 +16,28 @@ try:
 except ImportError:
     # Python3
     import tkinter as tk
-''' MIT License
-
-Copyright (c) 2017 Bret Cadle
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-'''
 
 # Default label attributes
-datefontsize = 50
-clockfontsize = 50
+datefontsize = 60
+clockfontsize = 100
 weatherfontsize = 50
 
 
 def tick(time1=''):
-    try:
-        # get UTC time
-        time2 = time.strftime('%H:%M:%S UTC', gmtime())
-        # if time string has changed, update it
-        if time2 != time1:
-            time1 = time2
-            clock.config(text=time2)
-    except:
-        time2 = "no"
-        clock.config(Text=time2)
+    """ This module checks for the current UTC time every 200ms """
+    # get UTC time
+    time2 = time.strftime('%H:%M:%S UTC', gmtime())
+    # if time string has changed, update it
+    if time2 != time1:
+        time1 = time2
+        clock.config(text=time2)
     # calls itself every 200 milliseconds
     # to update the time display as needed
     clock.after(200, tick)
 
 
-def UTCdate(date1=''):
+def dateutc(date1=''):
+    """ Checks current date at UTC every 200ms """
     # get Date at UTC
     date2 = time.strftime('%B %d %Y', gmtime())
     # if date string has changed, update it
@@ -71,10 +46,11 @@ def UTCdate(date1=''):
         date.config(text=date2)
     # calls itself every n milliseconds
     # to update the date display as needed
-    date.after(200, UTCdate)
+    date.after(200, dateutc)
 
 
 def tempcheck(temp1=''):
+    """ Using OWM, checks for temperature every 10000ms """
     try:
         # API key for Open Weather Map
         owm = pyowm.OWM(API_key='8a3f8610bb7985541149717900f43011')
@@ -87,6 +63,7 @@ def tempcheck(temp1=''):
         if temp2 != temp1:
             temp1 = temp2
             weather.config(text=str(int(temp1)) + ' F')
+    # TODO: At some point handle this error correctly
     except:
         error = "network error"
         weather.config(text=error)
@@ -216,6 +193,6 @@ menubar.add_cascade(label="Help", menu=helpmenu)
 root.config(menu=menubar)
 
 tempcheck()
-UTCdate()
+dateutc()
 tick()
 root.mainloop()
