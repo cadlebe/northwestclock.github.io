@@ -146,15 +146,15 @@ def settings():
 
 # Set the window title bar text
 root.wm_title('Northwest Clock')
-appname = tk.Label(
+nwclockapp = tk.Label(
     root,
     font=('TakaoPGothic', 50,),
     bg='#00541c',
     fg='#141414',
     anchor='w',)
-appname.config(text='Northwest Clock')
+nwclockapp.config(text='Northwest Clock')
 # Set clock label text
-appname.pack(fill='both', expand=1)
+nwclockapp.pack(fill='both', expand=1)
 date = tk.Label(
     root,
     font=('freesans', datefontsize, 'bold'),
