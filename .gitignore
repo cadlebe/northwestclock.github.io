@@ -1,1 +1,7 @@
 build/*
+dist/clock
+dest/NewClock
+NewClock.spec
+.vscode
+clock.spec
+clocklinux.spec

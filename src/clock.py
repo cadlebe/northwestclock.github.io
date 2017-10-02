@@ -88,6 +88,21 @@ def settings():
     win = Toplevel(root)
     win.wm_title('Settings')
 
+    def settitletext():
+        """ Assigns title text """
+        newtitletext = titletextentry.get()
+        nwclockapp.config(text=newtitletext)
+
+    def settitlebgcolor():
+        """ Assigns new bgcolor size to title label """
+        newbgcolor = titlebgcolorentry.get()
+        nwclockapp.config(bg=newbgcolor)
+
+    """def settitlefont():
+        """" Assigns new font size to title label """"
+        newfontsize = titlefontentry.get()
+        title.config(font=('freesans', newfontsize, 'bold')) """
+
     # Define how each button behaves, maybe refactor this later
     def setclockfont():
         """ Assigns new font size to clock label """
@@ -123,59 +138,78 @@ def settings():
         newbgcolor = weatherbgcolorentry.get()
         weather.config(bg=newbgcolor)
 
+    titletextlabel = tk.Label(
+        win,
+        text='Title Text',
+        anchor=E)
+    titletextlabel.grid(row=0, column=0)
+
+    titlebgcolorlabel = tk.Label(
+        win,
+        text='Title Background Color',
+        anchor=E)
+    titlebgcolorlabel.grid(row=1, column=0)
+
     datefontsizelabel = tk.Label(
         win,
-        text='Date fontsize',
+        text='Date Fontsize',
         anchor=E)
-    datefontsizelabel.grid(row=0, column=0)
+    datefontsizelabel.grid(row=2, column=0)
 
     clockfontsizelabel = tk.Label(
         win,
-        text='Clock fontsize',
+        text='Clock Fontsize',
         anchor=E)
-    clockfontsizelabel.grid(row=1, column=0)
+    clockfontsizelabel.grid(row=3, column=0)
 
     weatherfontsizelabel = tk.Label(
         win,
-        text='Weather fontsize',
+        text='Weather Fontsize',
         anchor=E,)
-    weatherfontsizelabel.grid(row=2, column=0)
+    weatherfontsizelabel.grid(row=4, column=0)
+
+    titletextentry = Entry(win)
+    titlebgcolorentry = Entry(win)
 
     datefontentry = Entry(win)
     clockfontentry = Entry(win)
     weatherfontentry = Entry(win)
 
+    titletextconfirm = tk.Button(win, text='confirm', command=settitletext)
+    titlebgcolorconfirm = tk.Button(win, text='confirm', command=settitlebgcolor)
+
     datefontconfirm = tk.Button(win, text='confirm', command=setdatefont)
     clockfontconfirm = tk.Button(win, text='confirm', command=setclockfont)
     weatherfontconfirm = tk.Button(win, text='confirm', command=setweatherfont)
 
-    datefontentry.grid(row=0, column=1)
-    datefontconfirm.grid(row=0, column=2)
-    clockfontentry.grid(row=1, column=1)
-    clockfontconfirm.grid(row=1, column=2)
-    weatherfontentry.grid(row=2, column=1)
-    weatherfontconfirm.grid(row=2, column=2)
-
-    """ s1 = tk.Separator(win, orient=HORIZONTAL)
-    s1.grid(row=3) """
+    titletextentry.grid(row=0, column=1)
+    titletextconfirm.grid(row=0, column=2)
+    titlebgcolorentry.grid(row=1, column=1)
+    titlebgcolorconfirm.grid(row=1, column=2)
+    datefontentry.grid(row=2, column=1)
+    datefontconfirm.grid(row=2, column=2)
+    clockfontentry.grid(row=3, column=1)
+    clockfontconfirm.grid(row=3, column=2)
+    weatherfontentry.grid(row=4, column=1)
+    weatherfontconfirm.grid(row=4, column=2)
 
     datebgcolorlabel = tk.Label(
         win,
         text='Date bgcolor',
         anchor=E,)
-    datebgcolorlabel.grid(row=3, column=0)
+    datebgcolorlabel.grid(row=5, column=0)
 
     clockbgcolorlabel = tk.Label(
         win,
         text='Clock bgcolor',
         anchor=E,)
-    clockbgcolorlabel.grid(row=4, column=0)
+    clockbgcolorlabel.grid(row=6, column=0)
 
     weatherbgcolorlabel = tk.Label(
         win,
         text='Weather bgcolor',
         anchor=E,)
-    weatherbgcolorlabel.grid(row=5, column=0)
+    weatherbgcolorlabel.grid(row=7, column=0)
 
     datebgcolorentry = Entry(win)
     clockbgcolorentry = Entry(win)
@@ -194,12 +228,12 @@ def settings():
         text='confirm',
         command=setweatherbgcolor)
 
-    datebgcolorentry.grid(row=3, column=1)
-    datebgcolorconfirm.grid(row=3, column=2)
-    clockbgcolorentry.grid(row=4, column=1)
-    clockbgcolorconfirm.grid(row=4, column=2)
-    weatherbgcolorentry.grid(row=5, column=1)
-    weatherbgcolorconfirm.grid(row=5, column=2)
+    datebgcolorentry.grid(row=5, column=1)
+    datebgcolorconfirm.grid(row=5, column=2)
+    clockbgcolorentry.grid(row=6, column=1)
+    clockbgcolorconfirm.grid(row=6, column=2)
+    weatherbgcolorentry.grid(row=7, column=1)
+    weatherbgcolorconfirm.grid(row=7, column=2)
 
     # TODO: consider using a tabbed notebook here when settings page
     # gets a little too full
