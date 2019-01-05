@@ -9,6 +9,7 @@ import packaging.specifiers
 import packaging.version
 import pyowm
 import six
+import argparse
 
 try:
     # Python2
@@ -22,6 +23,16 @@ datefontsize = 60
 clockfontsize = 100
 weatherfontsize = 50
 
+state = False
+
+parser = argparse.ArgumentParser(description='Northwest Clock - UTC')
+parser.add_argument('--fullscreen', help='Opens app in full screen, usefull for displays that have no keyboard and mouse.',
+                    action='store_true')
+args = parser.parse_args()
+if args.fullscreen:
+    state = True
+else:
+    state = False
 
 def tick(time1=''):
     """ This module checks for the current UTC time every 200ms """
@@ -286,6 +297,9 @@ helpmenu.add_command(label="About...", command=donothing)
 menubar.add_cascade(label="Help", menu=helpmenu)
 
 root.config(menu=menubar)
+
+# Code for handling fullscreen
+root.attributes("-fullscreen", state)
 
 tempcheck()
 dateutc()

@@ -7,3 +7,4 @@ clock.spec
 clocklinux.spec
 nwclockenv
 northwestclock.code-workspace
+src/__pycache__
