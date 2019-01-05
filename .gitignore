@@ -5,3 +5,4 @@ NewClock.spec
 .vscode
 clock.spec
 clocklinux.spec
+nwclockenv
