@@ -10,6 +10,8 @@ import packaging.version
 import pyowm
 import six
 import argparse
+import configuration
+import os.path
 
 try:
     # Python2
@@ -18,16 +20,27 @@ except ImportError:
     # Python3
     import tkinter as tk
 
+config = configuration.Configuration()
+
+# Check if this is the first time running the app, if yes then create default ini
+if os.path.isfile('config.ini'):
+    config.ReadConfigFile()
+    if config.getFirstRun() == True:
+        config.SetDefaultConfigFile()
+        config.setFirstRun('false')
+else:
+    config.SetDefaultConfigFile()
+    config.setFirstRun('false')
+
 # Default label attributes
-datefontsize = 60
-clockfontsize = 100
-weatherfontsize = 50
+datefontsize = config.getFontsize('date')
+clockfontsize = config.getFontsize('clock')
+weatherfontsize = config.getFontsize('weather')
 
 state = False
 
 parser = argparse.ArgumentParser(description='Northwest Clock - UTC')
-parser.add_argument('--fullscreen', help='Opens app in full screen, usefull for displays that have no keyboard and mouse.',
-                    action='store_true')
+parser.add_argument('--fullscreen', help='Opens app in full screen, usefull for displays that have no keyboard and mouse.', action='store_true')
 args = parser.parse_args()
 if args.fullscreen:
     state = True
@@ -103,11 +116,13 @@ def settings():
         """ Assigns title text """
         newtitletext = titletextentry.get()
         nwclockapp.config(text=newtitletext)
+        config.setTitleText(newtitletext)
 
     def settitlebgcolor():
         """ Assigns new bgcolor size to title label """
         newbgcolor = titlebgcolorentry.get()
         nwclockapp.config(bg=newbgcolor)
+        config.setColor('titlebackground', newbgcolor)
 
     """def settitlefont():
         """" Assigns new font size to title label """"
@@ -121,6 +136,7 @@ def settings():
         clock.config(font=(
             'freesans',
             newfontsize, 'bold'))
+        config.SetFontSize('clock', newfontsize)
 
     def setdatefont():
         """ Assigns new font size to date label """
@@ -128,26 +144,72 @@ def settings():
         date.config(font=(
             'freesans',
             newfontsize, 'bold'))
+        config.SetFontSize('date', newfontsize)
 
     def setweatherfont():
         """ Assigns new font size to weather label """
         newfontsize = weatherfontentry.get()
         weather.config(font=('freesans', newfontsize, 'bold'))
+        config.SetFontSize('weather', newfontsize)
 
     def setdatebgcolor():
         """ Assigns new background color to date label """
         newbgcolor = datebgcolorentry.get()
         date.config(bg=newbgcolor)
+        config.setColor('date', newbgcolor)
 
     def setclockbgcolor():
         """ Assigns new background color to clock label """
         newbgcolor = clockbgcolorentry.get()
         clock.config(bg=newbgcolor)
+        config.setColor('clock', newbgcolor)
 
     def setweatherbgcolor():
         """ Assigns new background color to weather label """
         newbgcolor = weatherbgcolorentry.get()
         weather.config(bg=newbgcolor)
+        config.setColor('weather', newbgcolor)
+
+    def setdefaults():
+        config.SetDefaultConfigFile()
+
+        """ Assigns title text """
+        newtitletext = config.getTitleText()
+        nwclockapp.config(text=newtitletext)
+        config.setTitleText(newtitletext)
+
+        """ Assigns new bgcolor size to title label """
+        newbgcolor = config.getColor('titlebackground')
+        nwclockapp.config(bg=newbgcolor)
+
+        """ Assigns new font size to clock label """
+        newfontsize = config.getFontsize('clock')
+        clock.config(font=(
+            'freesans',
+            newfontsize, 'bold'))
+
+        """ Assigns new font size to date label """
+        newfontsize = config.getFontsize('date')
+        date.config(font=(
+            'freesans',
+            newfontsize, 'bold'))
+
+        """ Assigns new font size to weather label """
+        newfontsize = config.getFontsize('weather')
+        weather.config(font=('freesans', newfontsize, 'bold'))
+
+        """ Assigns new background color to date label """
+        newbgcolor = config.getColor('datebackground')
+        date.config(bg=newbgcolor)
+
+        """ Assigns new background color to clock label """
+        newbgcolor = config.getColor('clockbackground')
+        clock.config(bg=newbgcolor)
+
+        """ Assigns new background color to weather label """
+        newbgcolor = config.getColor('weatherbackground')
+        weather.config(bg=newbgcolor)
+
 
     titletextlabel = tk.Label(
         win,
@@ -179,31 +241,6 @@ def settings():
         anchor=E,)
     weatherfontsizelabel.grid(row=4, column=0)
 
-    titletextentry = Entry(win)
-    titlebgcolorentry = Entry(win)
-
-    datefontentry = Entry(win)
-    clockfontentry = Entry(win)
-    weatherfontentry = Entry(win)
-
-    titletextconfirm = tk.Button(win, text='confirm', command=settitletext)
-    titlebgcolorconfirm = tk.Button(win, text='confirm', command=settitlebgcolor)
-
-    datefontconfirm = tk.Button(win, text='confirm', command=setdatefont)
-    clockfontconfirm = tk.Button(win, text='confirm', command=setclockfont)
-    weatherfontconfirm = tk.Button(win, text='confirm', command=setweatherfont)
-
-    titletextentry.grid(row=0, column=1)
-    titletextconfirm.grid(row=0, column=2)
-    titlebgcolorentry.grid(row=1, column=1)
-    titlebgcolorconfirm.grid(row=1, column=2)
-    datefontentry.grid(row=2, column=1)
-    datefontconfirm.grid(row=2, column=2)
-    clockfontentry.grid(row=3, column=1)
-    clockfontconfirm.grid(row=3, column=2)
-    weatherfontentry.grid(row=4, column=1)
-    weatherfontconfirm.grid(row=4, column=2)
-
     datebgcolorlabel = tk.Label(
         win,
         text='Date bgcolor',
@@ -222,41 +259,97 @@ def settings():
         anchor=E,)
     weatherbgcolorlabel.grid(row=7, column=0)
 
-    datebgcolorentry = Entry(win)
-    clockbgcolorentry = Entry(win)
-    weatherbgcolorentry = Entry(win)
+    loaddefaultslabel = tk.Label(
+        win,
+        text='Load Defaults',
+        anchor=E,)
+    loaddefaultslabel.grid(row=8, column=0)
+
+    titletextconfirm = tk.Button(
+        win,
+        text='confirm',
+        command=settitletext)
+
+    titlebgcolorconfirm = tk.Button(
+        win,
+        text='confirm',
+        command=settitlebgcolor)
+
+    datefontconfirm = tk.Button(
+        win,
+        text='confirm',
+        command=setdatefont)
+
+    clockfontconfirm = tk.Button(
+        win,
+        text='confirm',
+        command=setclockfont)
+
+    weatherfontconfirm = tk.Button(
+        win,
+        text='confirm',
+        command=setweatherfont)
 
     datebgcolorconfirm = tk.Button(
         win,
         text='confirm',
         command=setdatebgcolor)
+
     clockbgcolorconfirm = tk.Button(
         win,
         text='confirm',
         command=setclockbgcolor)
+
     weatherbgcolorconfirm = tk.Button(
         win,
         text='confirm',
         command=setweatherbgcolor)
 
+    loaddefaultsconfirm = tk.Button(
+        win,
+        text='confirm',
+        command=setdefaults)
+
+    titletextentry = Entry(win)
+    titlebgcolorentry = Entry(win)
+
+    datefontentry = Entry(win)
+    clockfontentry = Entry(win)
+    weatherfontentry = Entry(win)
+
+    datebgcolorentry = Entry(win)
+    clockbgcolorentry = Entry(win)
+    weatherbgcolorentry = Entry(win)
+
+    titletextentry.grid(row=0, column=1)
+    titletextconfirm.grid(row=0, column=2)
+    titlebgcolorentry.grid(row=1, column=1)
+    titlebgcolorconfirm.grid(row=1, column=2)
+    datefontentry.grid(row=2, column=1)
+    datefontconfirm.grid(row=2, column=2)
+    clockfontentry.grid(row=3, column=1)
+    clockfontconfirm.grid(row=3, column=2)
+    weatherfontentry.grid(row=4, column=1)
+    weatherfontconfirm.grid(row=4, column=2)
     datebgcolorentry.grid(row=5, column=1)
     datebgcolorconfirm.grid(row=5, column=2)
     clockbgcolorentry.grid(row=6, column=1)
     clockbgcolorconfirm.grid(row=6, column=2)
     weatherbgcolorentry.grid(row=7, column=1)
     weatherbgcolorconfirm.grid(row=7, column=2)
+    loaddefaultsconfirm.grid(row=8, column=1)
 
     # TODO: consider using a tabbed notebook here when settings page
     # gets a little too full
 
 
 # Set the window title bar text
-root.wm_title('Northwest Clock')
+root.wm_title(config.getTitleText())
 nwclockapp = tk.Label(
     root,
     font=('TakaoPGothic', 50,),
-    bg='#00541c',
-    fg='#141414',
+    bg=config.getColor('titlebackground'),
+    fg=config.getColor('titleforeground'),
     anchor='w',)
 nwclockapp.config(text='Northwest Clock')
 # Set clock label text
@@ -264,21 +357,21 @@ nwclockapp.pack(fill='both', expand=1)
 date = tk.Label(
     root,
     font=('freesans', datefontsize, 'bold'),
-    bg='#212121',
-    fg='#cecece')
+    bg=config.getColor('datebackground'),
+    fg=config.getColor('dateforeground'))
 date.pack(fill='both', expand=1)
 clock = tk.Label(
     root,
     font=('freesans', clockfontsize, 'bold'),
-    bg='#212121',
-    fg='#cecece')
+    bg=config.getColor('clockbackground'),
+    fg=config.getColor('clockforeground'))
 clock.pack(fill='both', expand=1)
 # Set weather label text
 weather = tk.Label(
     root,
     font=('freesans', weatherfontsize, 'bold'),
-    bg='#212121',
-    fg='#cecece'
+    bg=config.getColor('weatherbackground'),
+    fg=config.getColor('weatherforeground')
 )
 weather.pack(fill='both', expand=1)
 # create top menu
