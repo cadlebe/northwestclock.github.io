@@ -1,5 +1,7 @@
 import configparser
 import os.path
+import os.path
+import getpass
 
 class Configuration(object):
     def __init__(self):
@@ -9,10 +11,17 @@ class Configuration(object):
         self.color = 'COLORS'
         self.first_run = 'FIRSTRUN'
         self.titletext = 'TITLETEXT'
+        self.user = getpass.getuser()
+        self.path_to_config = str("/home/" + self.user + "/.config/northwest-clock/")
+
+    def __str__(self):
+        return str(self.path_to_config + self.config)
 
     def SetDefaultConfigFile(self):
-        if os.path.isfile(self.config_file) == False:
-            f = open(self.config_file, "w+")
+        if os.path.isdir(self.path_to_config) == False:
+            os.mkdir(self.path_to_config)
+        if os.path.isfile(self.path_to_config + self.config_file) == False:
+            f = open(self.path_to_config + self.config_file, "w+")
             f.close
         self.config[self.fontsize] = {'date': '60',
                                'clock': '100',
@@ -31,10 +40,10 @@ class Configuration(object):
         self.SetConfigFile()
 
     def ReadConfigFile(self):
-        self.config.read(self.config_file)
+        self.config.read(self.path_to_config + self.config_file)
 
     def SetConfigFile(self):
-        with open(self.config_file, 'w') as config_file:
+        with open(self.path_to_config + self.config_file, 'w') as config_file:
             self.config.write(config_file)
         config_file.close()
 

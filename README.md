@@ -33,16 +33,6 @@ What you need on your system in order to install:
 5. ```northwest-clock --version``` in terminal to verify installation.
 6. ```northwest-clock``` to open clock.
 
-### Using pyinstaller
-
-1. Download source
-2. Run pyinstaller using prefered method
-  * Prefered method
-  ```python
-  pyinstaller -F -n NAME /src/clock.py
-  ```
-3. Move the binary created from this process to desired location
-
 ### If using pc as a dedicated clock display
 
 1. Copy /usr/bin/northwest-clock/northwest-clock.service to /etc/systemd/system/
