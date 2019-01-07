@@ -29,9 +29,11 @@ if os.path.isfile(path_to_config + 'config.ini'):
     print(path_to_config + "config.ini")
     config.ReadConfigFile()
     if config.getFirstRun() == True:
+        print("were Here")
         config.SetDefaultConfigFile()
         config.setFirstRun('false')
 else:
+    print("We shouldn't be here")
     config.SetDefaultConfigFile()
     config.setFirstRun('false')
 
@@ -354,7 +356,7 @@ nwclockapp = tk.Label(
     bg=config.getColor('titlebackground'),
     fg=config.getColor('titleforeground'),
     anchor='w',)
-nwclockapp.config(text='Northwest Clock')
+nwclockapp.config(text=config.getTitleText())
 # Set clock label text
 nwclockapp.pack(fill='both', expand=1)
 date = tk.Label(

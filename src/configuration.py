@@ -19,7 +19,7 @@ class Configuration(object):
 
     def SetDefaultConfigFile(self):
         if os.path.isdir(self.path_to_config) == False:
-            os.mkdir(self.path_to_config)
+            os.mkdir(self.path_to_config + self.config_file)
         if os.path.isfile(self.path_to_config + self.config_file) == False:
             f = open(self.path_to_config + self.config_file, "w+")
             f.close
@@ -73,4 +73,5 @@ class Configuration(object):
         return self.config.getboolean(self.first_run, 'firstrun')
 
     def getTitleText(self):
-        return self.config.get(self.titletext, 'titletext')
+        title_text = self.config.get(self.titletext, 'titletext')
+        return title_text
