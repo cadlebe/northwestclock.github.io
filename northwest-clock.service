@@ -1,0 +1,15 @@
+[Unit]
+Description=Northwest Clock fullscreen service
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec=1
+User=<user do not run as root>
+ExecStart=northwest-clock --fullscreen
+
+[Install]
+WantedBy=multi-user.target
+

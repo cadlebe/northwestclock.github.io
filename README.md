@@ -1,4 +1,4 @@
-# NWClock v 0.2.5
+# NWClock v 0.2.6
 ### Copyright 2017 Bret Cadle
 
 This is a simple clock that displays UTC and current temp. It currently has a settings menu for changing the fontsize for the clock, date, and weather.
@@ -7,16 +7,31 @@ This is a simple clock that displays UTC and current temp. It currently has a se
 
 What you need on your system in order to install:
 
-- Preferably Ubuntu 12.04 or later
+- Ubuntu 12.04 or later
 - At least a Core i3 processor
 - 256mb RAM
 
 ## Installing
 
+### Manual Installation
 1. Download the dist/clock file for your operating system
 2. Extract the .zip file or file to any location that you have read-write access
 3. Navigate to the newly extracted directory
 4. Double-Click on clock application
+
+### Using Debian Package
+
+1. Download the .deb file.
+2. Make the package executable:
+  ```Bash
+  sudo chmod +x <package name>
+  ```
+3. Then:
+  ```Bash
+  sudo apt-get install ./<package name>
+  ```
+5. ```northwest-clock --version``` in terminal to verify installation.
+6. ```northwest-clock``` to open clock.
 
 ### Using pyinstaller
 
@@ -27,6 +42,26 @@ What you need on your system in order to install:
   pyinstaller -F -n NAME /src/clock.py
   ```
 3. Move the binary created from this process to desired location
+
+### If using pc as a dedicated clock display
+
+1. Copy /usr/bin/northwest-clock/northwest-clock.service to /etc/systemd/system/
+2. Open northwest-clock.service:
+  ```bash
+  vim /etc/systemd/northwest-clock.service
+  ```
+3. Change <username> to username that will be running clock as a service
+4. Save and exit file
+5. Enable service:
+  ```Bash
+  sudo systemctl enable northwest-clock.service
+  ```
+7. Start service:
+  ```Bash
+  sudo systemctl start northwest-clock.service
+  ```
+8. Clock will now open full screen and will do so when OS is started and logged in.
+9.  A Raspberry Pi is recommended as a dedicated display computer, attach to screen of choice.
 
 # Built with
 
@@ -41,11 +76,7 @@ What you need on your system in order to install:
 
 I have not yet come up with a code of conduct for contributing, though if you would like to please send a pull request as usual or email me directly with any ideas.
 
-# Versioning
-
-Versioning is done within Git using the tag system
-
-Authors
+# Authors
 
 - Bret Cadle - _Initial work_ - [Bretcadle.com](https://www.bretcadle.com)
 
@@ -55,7 +86,7 @@ This project is licensed under the MIT License - see the LICENSE.md file for det
 
 # Acknowledgments
 
-I'll update this section in the coming weeks as I have gotten an immense amount of help from stackoverflow, reddit, and a few other places and would like to ackowledge anyone's whose solutions help get this clock ticking.
+I'll update this section in the coming weeks as I have gotten an immense amount of help from stackoverflow, reddit, and a few other places and would like to acknowledge anyone's whose solutions help got this clock ticking.
 
 # Known bugs
 - app tends to hang when changing font sizes

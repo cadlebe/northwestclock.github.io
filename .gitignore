@@ -1,12 +1,13 @@
 build/*
-dist/clock
-dest/NewClock
-NewClock.spec
+dist/*
 .vscode
 clock.spec
-clocklinux.spec
 nwclockenv
 northwestclock.code-workspace
 src/__pycache__
+src/config.ini
+src/config.ini.bak
 config.ini
 config.ini.bak
+northwest-clock.spec
+nwclock.spec
