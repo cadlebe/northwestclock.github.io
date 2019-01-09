@@ -9,7 +9,7 @@ work_path = "build/" + directory_name
 
 print(work_path)
 
-if os.path.isdir('dist/' + app_name + version):
+if os.path.isdir(dist_path):
     print("Version exists!")
 else:
     subprocess.Popen(['pyinstaller', 'src/clock.py',
