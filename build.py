@@ -9,11 +9,10 @@ work_path = "build/" + directory_name
 
 print(work_path)
 
-if os.path.isdir('dist/nwclock-0_2_6'):
+if os.path.isdir(dist_path):
     print("Version exists!")
 else:
     subprocess.Popen(['pyinstaller', 'src/clock.py',
-                      '--onefile',
                       '--add-data=LICENSE:.',
                       '--add-data=README.md:.',
                       '--add-data=northwest-clock.service:.',
