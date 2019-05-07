@@ -19,7 +19,7 @@ class Configuration(object):
 
     def SetDefaultConfigFile(self):
         if os.path.isdir(self.path_to_config) == False:
-            os.mkdir(self.path_to_config + self.config_file)
+            os.mkdir(self.path_to_config)
         if os.path.isfile(self.path_to_config + self.config_file) == False:
             f = open(self.path_to_config + self.config_file, "w+")
             f.close

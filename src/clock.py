@@ -29,11 +29,9 @@ if os.path.isfile(path_to_config + 'config.ini'):
     print(path_to_config + "config.ini")
     config.ReadConfigFile()
     if config.getFirstRun() == True:
-        print("were Here")
         config.SetDefaultConfigFile()
         config.setFirstRun('false')
 else:
-    print("We shouldn't be here")
     config.SetDefaultConfigFile()
     config.setFirstRun('false')
 
