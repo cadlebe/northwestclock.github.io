@@ -2,7 +2,6 @@ build/*
 dist/*
 .vscode
 clock.spec
-nwclockenv
 northwestclock.code-workspace
 src/__pycache__
 src/config.ini
