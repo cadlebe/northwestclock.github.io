@@ -21,9 +21,12 @@ except ImportError:
     import tkinter as tk
 
 config = configuration.Configuration()
+config_vars = vars(configuration.Configuration())
+path_to_config = config_vars.get('path_to_config')
 
 # Check if this is the first time running the app, if yes then create default ini
-if os.path.isfile('config.ini'):
+if os.path.isfile(path_to_config + 'config.ini'):
+    print(path_to_config + "config.ini")
     config.ReadConfigFile()
     if config.getFirstRun() == True:
         config.SetDefaultConfigFile()
@@ -351,7 +354,7 @@ nwclockapp = tk.Label(
     bg=config.getColor('titlebackground'),
     fg=config.getColor('titleforeground'),
     anchor='w',)
-nwclockapp.config(text='Northwest Clock')
+nwclockapp.config(text=config.getTitleText())
 # Set clock label text
 nwclockapp.pack(fill='both', expand=1)
 date = tk.Label(
