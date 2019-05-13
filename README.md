@@ -1,4 +1,4 @@
-# NWClock v 0.2.8
+# NWClock v 0.2.9a
 ### Copyright 2017 Bret Cadle
 
 This is a simple clock that displays UTC and current temp. It currently has a settings menu for changing the fontsize for the clock, date, and weather.
@@ -19,20 +19,6 @@ What you need on your system in order to install:
 3. Navigate to the newly extracted directory
 4. Double-Click on clock application
 
-### Using Debian Package
-
-1. Download the .deb file.
-2. Make the package executable:
-  ```Bash
-  sudo chmod +x <package name>
-  ```
-3. Then:
-  ```Bash
-  sudo apt-get install ./<package name>
-  ```
-5. ```northwest-clock --version``` in terminal to verify installation.
-6. ```northwest-clock``` to open clock.
-
 ### If using pc as a dedicated clock display
 
 1. Copy /usr/bin/northwest-clock/northwest-clock.service to /etc/systemd/system/
@@ -40,7 +26,7 @@ What you need on your system in order to install:
   ```bash
   vim /etc/systemd/northwest-clock.service
   ```
-3. Change <username> to username that will be running clock as a service
+3. Change <username> to username that will be running clock as a service, (it is not recommend to run as root.)
 4. Save and exit file
 5. Enable service:
   ```Bash
@@ -52,6 +38,48 @@ What you need on your system in order to install:
   ```
 8. Clock will now open full screen and will do so when OS is started and logged in.
 9.  A Raspberry Pi is recommended as a dedicated display computer, attach to screen of choice.
+
+### Weather information
+
+In order to have weather information displayed you will need to get an API key from [Open Weather Map](https://openweathermap.org)
+The free tier will give you what you need for the current version of the clock.
+Once you have your key:
+1. Click 'edit' -> settings
+2. Enter API key
+3. Press configure
+4. Cose then reopen clock.
+5. The temperature should be displayed at the bottom of the clock.
+
+## Configuration
+
+A big recent change is the configuration. It is installed in ~/.config/northwest-clock/config.ini
+
+By default it will look like so:
+
+[FONTSIZES]
+date = 60
+clock = 100
+weather = 50
+title = 60
+
+[COLORS]
+titlebackground = #00541c
+titleforeground = #141414
+datebackground = #212121
+dateforeground = #cecece
+clockbackground = #212121
+clockforeground = #cecece
+weatherbackground = #212121
+weatherforeground = #cecece
+
+[FIRSTRUN]
+firstrun = false
+
+[TITLETEXT]
+titletext = Northwest Clock
+
+[APIKEY]
+openweather api key = Get an API key at OWM, see README.
 
 # Built with
 
@@ -89,12 +117,6 @@ I'll update this section in the coming weeks as I have gotten an immense amount 
 - More items for weather display (wind, direction, humidity, etc.)
 - Ability to change location for weather information
 - Ability to change timezone
-
-### Further Out
-- Dynamic resizing of font when resizing window (maybe)
-- Ability to hide file menu when in fullscreen
-- Fullscreen button (maybe)
-- Ability to use an image as the background
 
 # Workarounds
 ## (NOTE: These workarounds only work if you download and build the source code using pyinstaller)

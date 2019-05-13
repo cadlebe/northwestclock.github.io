@@ -78,9 +78,10 @@ def dateutc(date1=''):
 
 def tempcheck(temp1=''):
     """ Using OWM, checks for temperature every 10000ms """
+    apikey = str(config.getApiKey())
     try:
         # API key for Open Weather Map
-        owm = pyowm.OWM(API_key='8a3f8610bb7985541149717900f43011')
+        owm = pyowm.OWM(API_key=apikey)
         # Get weather for seattle, all of it
         observation = owm.weather_at_place('Seattle, US')
         w = observation.get_weather()
@@ -90,10 +91,11 @@ def tempcheck(temp1=''):
         if temp2 != temp1:
             temp1 = temp2
             weather.config(text=str(int(temp1)) + ' F')
-    # TODO: At some point handle this error correctly
+        return temp2
     except:
         error = "network error"
         weather.config(text=error)
+        return error 
 
     weather.after(10000, tempcheck)
 
@@ -172,6 +174,11 @@ def settings():
         newbgcolor = weatherbgcolorentry.get()
         weather.config(bg=newbgcolor)
         config.setColor('weather', newbgcolor)
+    
+    def setapikey():
+        """ Allows user to set api for openweather if desired """
+        apikey = apikeyentry.get()
+        config.setApiKey(apikey)
 
     def setdefaults():
         config.SetDefaultConfigFile()
@@ -213,7 +220,7 @@ def settings():
         newbgcolor = config.getColor('weatherbackground')
         weather.config(bg=newbgcolor)
 
-
+    # Position Labels in Grid
     titletextlabel = tk.Label(
         win,
         text='Title Text',
@@ -262,12 +269,19 @@ def settings():
         anchor=E,)
     weatherbgcolorlabel.grid(row=7, column=0)
 
+    apikeylabel = tk.Label(
+        win,
+        text='Openweather API Key',
+        anchor=E,)
+    apikeylabel.grid(row=8, column=0)
+
     loaddefaultslabel = tk.Label(
         win,
         text='Load Defaults',
         anchor=E,)
-    loaddefaultslabel.grid(row=8, column=0)
+    loaddefaultslabel.grid(row=9, column=0)
 
+    # Create Buttons
     titletextconfirm = tk.Button(
         win,
         text='confirm',
@@ -307,12 +321,18 @@ def settings():
         win,
         text='confirm',
         command=setweatherbgcolor)
+    
+    apikeyconfirm = tk.Button(
+        win,
+        text='confirm',
+        command=setapikey)
 
     loaddefaultsconfirm = tk.Button(
         win,
         text='confirm',
         command=setdefaults)
 
+    # create Entry Spaces
     titletextentry = Entry(win)
     titlebgcolorentry = Entry(win)
 
@@ -324,6 +344,9 @@ def settings():
     clockbgcolorentry = Entry(win)
     weatherbgcolorentry = Entry(win)
 
+    apikeyentry = Entry(win)
+
+    # Position entry spaces
     titletextentry.grid(row=0, column=1)
     titletextconfirm.grid(row=0, column=2)
     titlebgcolorentry.grid(row=1, column=1)
@@ -340,7 +363,9 @@ def settings():
     clockbgcolorconfirm.grid(row=6, column=2)
     weatherbgcolorentry.grid(row=7, column=1)
     weatherbgcolorconfirm.grid(row=7, column=2)
-    loaddefaultsconfirm.grid(row=8, column=1)
+    apikeyentry.grid(row=8, column=1)
+    apikeyconfirm.grid(row=8, column=2)
+    loaddefaultsconfirm.grid(row=9, column=1)
 
     # TODO: consider using a tabbed notebook here when settings page
     # gets a little too full
@@ -376,7 +401,12 @@ weather = tk.Label(
     bg=config.getColor('weatherbackground'),
     fg=config.getColor('weatherforeground')
 )
-weather.pack(fill='both', expand=1)
+temperature = tempcheck()
+if temperature != "network error":
+    weather.pack(fill='both', expand=1)
+else:
+    print(temperature)
+
 # create top menu
 menubar = Menu(root)
 filemenu = Menu(menubar, tearoff=0)
