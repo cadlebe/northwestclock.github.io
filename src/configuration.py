@@ -12,6 +12,7 @@ class Configuration(object):
         self.first_run = 'FIRSTRUN'
         self.titletext = 'TITLETEXT'
         self.api_key = 'APIKEY'
+        self.timezone = 'TIMEZONE'
         self.user = getpass.getuser()
         self.path_to_config = str("/home/" + self.user + "/.config/northwest-clock/")
 
@@ -39,6 +40,7 @@ class Configuration(object):
         self.config[self.first_run] = {'firstrun': 'true'}
         self.config[self.titletext] = {'titletext': 'Northwest Clock'}
         self.config[self.api_key] = {'openWeather api key': 'Get an API key at OWM, see README.'}
+        self.config[self.timezone] = {'timezone': 'UTC'}
         self.SetConfigFile()
 
     def ReadConfigFile(self):
@@ -69,6 +71,10 @@ class Configuration(object):
         self.config.set(self.api_key, 'openWeather api key', option)
         self.SetConfigFile()
 
+    def setTimezone(self, option):
+        self.config.set(self.timezone, 'timezone', option)
+        self.SetConfigFile()
+
     def getFontsize(self, label):
         return self.config.get('FONTSIZES', label)
 
@@ -85,3 +91,7 @@ class Configuration(object):
     def getApiKey(self):
         api_key = self.config.get(self.api_key, 'openweather api key')
         return api_key
+
+    def getTimezone(self):
+        timezone = self.config.get(self.timezone, 'timezone')
+        return timezone

@@ -1,6 +1,10 @@
 import time
+import pytz
 from time import gmtime
 from tkinter import *
+from datetime import datetime, timedelta
+from pytz import timezone
+import pytz
 
 import appdirs
 import packaging
@@ -23,6 +27,8 @@ except ImportError:
 config = configuration.Configuration()
 config_vars = vars(configuration.Configuration())
 path_to_config = config_vars.get('path_to_config')
+timefmt = '%H:%M:%S %Z'
+datefmt = '%Y-%m-%d'
 
 # Check if this is the first time running the app, if yes then create default ini
 if os.path.isfile(path_to_config + 'config.ini'):
@@ -39,6 +45,7 @@ else:
 datefontsize = config.getFontsize('date')
 clockfontsize = config.getFontsize('clock')
 weatherfontsize = config.getFontsize('weather')
+timezones_common = pytz.common_timezones
 
 state = False
 
@@ -50,14 +57,22 @@ if args.fullscreen:
 else:
     state = False
 
+def currenttime():
+    utc = pytz.utc
+    timezone_str = config.getTimezone()
+    timezone = pytz.timezone(timezone_str)
+    timeUTC = datetime(2002, 10, 27, 12, 0, 0, tzinfo=utc).now()
+    currenttime = timeUTC.astimezone(timezone)
+    return currenttime
+
 def tick(time1=''):
     """ This module checks for the current UTC time every 200ms """
-    # get UTC time
-    time2 = time.strftime('%H:%M:%S UTC', gmtime())
+    time2 = currenttime()
     # if time string has changed, update it
     if time2 != time1:
         time1 = time2
-        clock.config(text=time2)
+        time_string = time2.strftime(timefmt)
+        clock.config(text=time_string)
     # calls itself every 200 milliseconds
     # to update the time display as needed
     clock.after(200, tick)
@@ -66,11 +81,12 @@ def tick(time1=''):
 def dateutc(date1=''):
     """ Checks current date at UTC every 200ms """
     # get Date at UTC
-    date2 = time.strftime('%B %d %Y', gmtime())
+    date2 = currenttime()
     # if date string has changed, update it
     if date2 != date1:
         date1 = date2
-        date.config(text=date2)
+        date_string = date2.strftime(datefmt)
+        date.config(text=date_string)
     # calls itself every n milliseconds
     # to update the date display as needed
     date.after(200, dateutc)
@@ -180,6 +196,16 @@ def settings():
         apikey = apikeyentry.get()
         config.setApiKey(apikey)
 
+    def settimezone():
+        timezone = timezoneentry.get()
+        timezones = pytz.all_timezones
+        if timezone in timezones:
+            config.setTimezone(timezone)
+            timezoneerror.config(text='')
+        else:
+            error = "Invalid Timezone!"
+            timezoneerror.config(text=error)
+
     def setdefaults():
         config.SetDefaultConfigFile()
 
@@ -220,7 +246,7 @@ def settings():
         newbgcolor = config.getColor('weatherbackground')
         weather.config(bg=newbgcolor)
 
-    # Position Labels in Grid
+    # Create and position Labels in Grid
     titletextlabel = tk.Label(
         win,
         text='Title Text',
@@ -275,11 +301,22 @@ def settings():
         anchor=E,)
     apikeylabel.grid(row=8, column=0)
 
+    timezonelabel = tk.Label(
+        win,
+        text='Timezone',
+        anchor=E,)
+    timezonelabel.grid(row=9, column=0)
+
+    timezoneerror = tk.Label(
+        win,
+        anchor=E,)
+    timezoneerror.grid(row=9, column=3)
+
     loaddefaultslabel = tk.Label(
         win,
         text='Load Defaults',
         anchor=E,)
-    loaddefaultslabel.grid(row=9, column=0)
+    loaddefaultslabel.grid(row=10, column=0)
 
     # Create Buttons
     titletextconfirm = tk.Button(
@@ -327,6 +364,11 @@ def settings():
         text='confirm',
         command=setapikey)
 
+    timezoneconfirm = tk.Button(
+        win,
+        text='confirm',
+        command=settimezone)
+
     loaddefaultsconfirm = tk.Button(
         win,
         text='confirm',
@@ -346,7 +388,9 @@ def settings():
 
     apikeyentry = Entry(win)
 
-    # Position entry spaces
+    timezoneentry = Entry(win)
+
+    # Position entry spaces and buttons in grid
     titletextentry.grid(row=0, column=1)
     titletextconfirm.grid(row=0, column=2)
     titlebgcolorentry.grid(row=1, column=1)
@@ -365,7 +409,9 @@ def settings():
     weatherbgcolorconfirm.grid(row=7, column=2)
     apikeyentry.grid(row=8, column=1)
     apikeyconfirm.grid(row=8, column=2)
-    loaddefaultsconfirm.grid(row=9, column=1)
+    timezoneentry.grid(row=9, column=1)
+    timezoneconfirm.grid(row=9, column=2)
+    loaddefaultsconfirm.grid(row=10, column=1)
 
     # TODO: consider using a tabbed notebook here when settings page
     # gets a little too full
