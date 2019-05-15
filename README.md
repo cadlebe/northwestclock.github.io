@@ -84,9 +84,16 @@ openweather api key = Get an API key at OWM, see README.
 [TIMEZONE]
 timezone = UTC
 
-# Full List of Timezones
+[WEATHER]
+weatherlocation = Seattle, US
+
+## Full List of Timezones
 
 [Timezones](http://worldtimeapi.org/timezones)
+
+## Weather Location
+
+If you have gotten an API key from openweather you can go into the config, or the settings and changed the weather location. Just put in your city as so "Cityname, US". You can also use your zip code i.e. "98584, US" and it will default to the nearest city available in openweather.
 
 # Built with
 
