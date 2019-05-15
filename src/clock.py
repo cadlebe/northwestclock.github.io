@@ -95,11 +95,13 @@ def dateutc(date1=''):
 def tempcheck(temp1=''):
     """ Using OWM, checks for temperature every 10000ms """
     apikey = str(config.getApiKey())
+    weather_location = str(config.getWeatherLocation('weather location'))
     try:
         # API key for Open Weather Map
         owm = pyowm.OWM(API_key=apikey)
         # Get weather for seattle, all of it
-        observation = owm.weather_at_place('Seattle, US')
+        observation = owm.weather_at_place(weather_location)
+        #observation = owm.weather_at_place('Seattle, US')
         w = observation.get_weather()
         currenttemp = w.get_temperature('fahrenheit')
         temp2 = currenttemp['temp']
@@ -107,13 +109,13 @@ def tempcheck(temp1=''):
         if temp2 != temp1:
             temp1 = temp2
             weather.config(text=str(int(temp1)) + ' F')
+        weather.after(10000, tempcheck)
         return temp2
     except:
         error = "network error"
         weather.config(text=error)
         return error 
 
-    weather.after(10000, tempcheck)
 
 
 root = tk.Tk()
@@ -205,6 +207,10 @@ def settings():
         else:
             error = "Invalid Timezone!"
             timezoneerror.config(text=error)
+    
+    def setweatherlocation():
+        weatherlocation = weatherlocationentry.get()
+        config.setWeatherLocation(weatherlocation)
 
     def setdefaults():
         config.SetDefaultConfigFile()
@@ -312,11 +318,17 @@ def settings():
         anchor=E,)
     timezoneerror.grid(row=9, column=3)
 
+    weatherlocationlabel = tk.Label(
+        win,
+        text='Weather Location',
+        anchor=E,)
+    weatherlocationlabel.grid(row=10, column=0)
+
     loaddefaultslabel = tk.Label(
         win,
         text='Load Defaults',
         anchor=E,)
-    loaddefaultslabel.grid(row=10, column=0)
+    loaddefaultslabel.grid(row=11, column=0)
 
     # Create Buttons
     titletextconfirm = tk.Button(
@@ -368,6 +380,11 @@ def settings():
         win,
         text='confirm',
         command=settimezone)
+    
+    weatherlocationconfirm =  tk.Button(
+        win,
+        text='confirm',
+        command=setweatherlocation)
 
     loaddefaultsconfirm = tk.Button(
         win,
@@ -390,6 +407,8 @@ def settings():
 
     timezoneentry = Entry(win)
 
+    weatherlocationentry = Entry(win)
+
     # Position entry spaces and buttons in grid
     titletextentry.grid(row=0, column=1)
     titletextconfirm.grid(row=0, column=2)
@@ -411,7 +430,9 @@ def settings():
     apikeyconfirm.grid(row=8, column=2)
     timezoneentry.grid(row=9, column=1)
     timezoneconfirm.grid(row=9, column=2)
-    loaddefaultsconfirm.grid(row=10, column=1)
+    weatherlocationentry.grid(row=10, column=1)
+    weatherlocationconfirm.grid(row=10, column=2)
+    loaddefaultsconfirm.grid(row=11, column=1)
 
     # TODO: consider using a tabbed notebook here when settings page
     # gets a little too full
