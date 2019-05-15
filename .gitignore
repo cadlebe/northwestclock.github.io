@@ -1,14 +1,3 @@
-build/*
-dist/*
-.vscode
 clock.spec
 northwestclock.code-workspace
-src/__pycache__
-src/config.ini
-src/config.ini.bak
-config.ini
-config.ini.bak
-northwest-clock.spec
-nwclock.spec
-env
 apikeyopenweather

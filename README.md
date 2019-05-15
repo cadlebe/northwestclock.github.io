@@ -81,6 +81,13 @@ titletext = Northwest Clock
 [APIKEY]
 openweather api key = Get an API key at OWM, see README.
 
+[TIMEZONE]
+timezone = UTC
+
+# Full List of Timezones
+
+[Timezones](http://worldtimeapi.org/timezones)
+
 # Built with
 
 - [VSCode](https://code.visualstudio.com)
