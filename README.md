@@ -1,4 +1,4 @@
-# NWClock v 0.2.8
+# NWClock v 0.2.9
 ### Copyright 2017 Bret Cadle
 
 This is a simple clock that displays UTC and current temp. It currently has a settings menu for changing the fontsize for the clock, date, and weather.
@@ -8,6 +8,7 @@ This is a simple clock that displays UTC and current temp. It currently has a se
 What you need on your system in order to install:
 
 - Ubuntu 12.04 or later
+- Python 3.6+
 - At least a Core i3 processor
 - 256mb RAM
 
@@ -19,39 +20,72 @@ What you need on your system in order to install:
 3. Navigate to the newly extracted directory
 4. Double-Click on clock application
 
-### Using Debian Package
+## Configuration
 
-1. Download the .deb file.
-2. Make the package executable:
-  ```Bash
-  sudo chmod +x <package name>
-  ```
-3. Then:
-  ```Bash
-  sudo apt-get install ./<package name>
-  ```
-5. ```northwest-clock --version``` in terminal to verify installation.
-6. ```northwest-clock``` to open clock.
+Configuration is done via both the in-app settings menu and the config file. It is located in ~/.config/northwest-clock/config.ini
 
-### If using pc as a dedicated clock display
+Default configuration settings:
 
-1. Copy /usr/bin/northwest-clock/northwest-clock.service to /etc/systemd/system/
-2. Open northwest-clock.service:
-  ```bash
-  vim /etc/systemd/northwest-clock.service
-  ```
-3. Change <username> to username that will be running clock as a service
-4. Save and exit file
-5. Enable service:
-  ```Bash
-  sudo systemctl enable northwest-clock.service
-  ```
-7. Start service:
-  ```Bash
-  sudo systemctl start northwest-clock.service
-  ```
-8. Clock will now open full screen and will do so when OS is started and logged in.
-9.  A Raspberry Pi is recommended as a dedicated display computer, attach to screen of choice.
+````
+[FONTSIZES]
+date = 60
+clock = 100
+weather = 50
+title = 60
+
+[COLORS]
+titlebackground = #00541c
+titleforeground = #141414
+datebackground = #212121
+dateforeground = #cecece
+clockbackground = #212121
+clockforeground = #cecece
+weatherbackground = #212121
+weatherforeground = #cecece
+
+[FIRSTRUN]
+firstrun = false
+
+[TITLETEXT]
+titletext = Northwest Clock
+
+[APIKEY]
+openweather api key = Get an API key at OWM, see README.
+
+[TIMEZONE]
+timezone = UTC
+
+[WEATHER]
+weatherlocation = Seattle, US
+````
+
+## Weather information
+
+### Open Weather Map API Key
+
+Weather information will only be available if you obtain a free API-Key from Open Weather Map.
+
+[Sign up at OWM](https://home.openweathermap.org/users/sign_up)
+
+Once you have your key:
+1. Click 'edit' -> settings
+2. Enter API key
+3. Press configure
+4. Cose then reopen clock.
+5. The temperature should be displayed at the bottom of the clock.
+
+WARNING: If you reset the configuration to default then the API key will need to be reentered. Please backup your config!
+
+### Weather Location
+
+If you have gotten an API key from openweather you can go into the config, or the settings and changed the weather location. Just put in your city as so "Cityname, US". You can also use your zip code i.e. "98584, US" and it will default to the nearest city available in openweather.
+
+
+## Full List of Timezones
+
+Timezones follow the 'county'/'city' format and are limited to a handful of cities in each timezone.
+
+[Timezones](http://worldtimeapi.org/timezones)
 
 # Built with
 
@@ -61,6 +95,7 @@ What you need on your system in order to install:
 - [Python3.5](https://www.python.org)
 - [pyinstaller](http://pyinstaller.readthedocs.io/en/stable/index.html#)
 - [Ubuntu](https://www.ubuntu.com)
+- [Manjaro](https://www.majaro.org)
 
 # Contributing
 
@@ -72,14 +107,7 @@ I have not yet come up with a code of conduct for contributing, though if you wo
 
 # License
 
-This project is licensed under the MIT License - see the LICENSE.md file for details.
-
-# Acknowledgments
-
-I'll update this section in the coming weeks as I have gotten an immense amount of help from stackoverflow, reddit, and a few other places and would like to acknowledge anyone's whose solutions help got this clock ticking.
-
-# Known bugs
-- app tends to hang when changing font sizes
+This project is licensed under the GPL-3.0+ License - see the LICENSE.md file for details.
 
 # Future Changes
 
@@ -87,23 +115,3 @@ I'll update this section in the coming weeks as I have gotten an immense amount 
 - Ability to change background and foreground colors
 - Ability to change font
 - More items for weather display (wind, direction, humidity, etc.)
-- Ability to change location for weather information
-- Ability to change timezone
-
-### Further Out
-- Dynamic resizing of font when resizing window (maybe)
-- Ability to hide file menu when in fullscreen
-- Fullscreen button (maybe)
-- Ability to use an image as the background
-
-# Workarounds
-## (NOTE: These workarounds only work if you download and build the source code using pyinstaller)
-
-### Location
-To modify the location you must change:
-```observation = owm.weather_at_place('Seattle, US')```
-to read your current location, i.e. 'London, UK' or 'Toronto, CA'
-
-### GMT
-Location names used in OWM can be found at https://openweathermap.org.
-The time zone can be changed by simply removing "gmtime()" from the source code.

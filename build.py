@@ -2,7 +2,7 @@ import os.path
 import subprocess
 
 app_name = "northwest-clock"
-version = "0_2_8"
+version = "0_2_9"
 directory_name = app_name + "-" + version
 dist_path = "dist/" + directory_name
 work_path = "build/" + directory_name
@@ -13,6 +13,7 @@ if os.path.isdir(dist_path):
     print("Version exists!")
 else:
     subprocess.Popen(['pyinstaller', 'src/clock.py',
+                      '-F',
                       '--add-data=LICENSE:.',
                       '--add-data=README.md:.',
                       '--add-data=northwest-clock.service:.',
