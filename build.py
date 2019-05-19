@@ -5,7 +5,7 @@ app_name = "northwest-clock"
 version = "0_2_8"
 directory_name = app_name + "-" + version
 dist_path = "dist/" + directory_name
-work_path = "/usr/bin/"
+work_path = "build/" + directory_name
 
 print(work_path)
 

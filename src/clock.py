@@ -32,7 +32,6 @@ datefmt = '%Y-%m-%d'
 
 # Check if this is the first time running the app, if yes then create default ini
 if os.path.isfile(path_to_config + 'config.ini'):
-    print(path_to_config + "config.ini")
     config.ReadConfigFile()
     if config.getFirstRun() == True:
         config.SetDefaultConfigFile()
