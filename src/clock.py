@@ -1,7 +1,11 @@
 import time
 import pytz
 from time import gmtime
-from tkinter import *
+# Development uncomment:
+# from tkinter import *
+# Release uncomment:
+from tkinter import Button, Label, Canvas, Toplevel, E, W, N, S, Entry, StringVar, Message, LEFT, Menu
+
 from datetime import datetime, timedelta
 from pytz import timezone
 import pytz
