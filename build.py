@@ -13,6 +13,7 @@ if os.path.isdir(dist_path):
     print("Version exists!")
 else:
     subprocess.Popen(['pyinstaller', 'src/clock.py',
+                      '-F',
                       '--add-data=LICENSE:.',
                       '--add-data=README.md:.',
                       '--add-data=northwest-clock.service:.',
