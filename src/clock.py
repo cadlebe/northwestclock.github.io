@@ -5,6 +5,7 @@ from tkinter import *
 from datetime import datetime, timedelta
 from pytz import timezone
 import pytz
+import webbrowser
 
 import appdirs
 import packaging
@@ -29,6 +30,7 @@ config_vars = vars(configuration.Configuration())
 path_to_config = config_vars.get('path_to_config')
 timefmt = '%H:%M:%S %Z'
 datefmt = '%Y-%m-%d'
+version = '029'
 
 # Check if this is the first time running the app, if yes then create default ini
 if os.path.isfile(path_to_config + 'config.ini'):
@@ -55,6 +57,9 @@ if args.fullscreen:
     state = True
 else:
     state = False
+
+def close_window(window):
+    window.destroy()
 
 def currenttime():
     utc = pytz.utc
@@ -133,6 +138,9 @@ def settings():
     """ Opens settings window """
     win = Toplevel(root)
     win.wm_title('Settings')
+
+    def close_settings():
+        win.destroy()
 
     def settitletext():
         """ Assigns title text """
@@ -433,8 +441,89 @@ def settings():
     weatherlocationconfirm.grid(row=10, column=2)
     loaddefaultsconfirm.grid(row=11, column=1)
 
+    close_about_button = tk.Button(
+        win,
+        text='Exit without save',
+        command=close_settings)
+    close_about_button.grid(row=12, column=0)
+
     # TODO: consider using a tabbed notebook here when settings page
     # gets a little too full
+
+def about_page():
+    win = Toplevel(root)
+    win.wm_title('About')
+    row = 0
+
+    description_file = open("description", "rt")
+    desc_text = description_file.read()
+    description_file.close()
+
+    about_var = StringVar()
+    about_var.set(desc_text)
+
+    def callback():
+        webbrowser.open_new_tab(r"https://github.com/cadlebe/northwestclock.github.io/wiki")
+
+    def close_about():
+        win.destroy()
+
+    abouttitlelabel = tk.Label(
+        win,
+        font=('freesans', 24, "bold",),
+        text='About',
+        justify=LEFT,
+        anchor=E)
+    abouttitlelabel.grid(row=row, column=0)
+
+    row+=1
+
+    about_text = Message(
+        win,
+        font=('freesans', 16,),
+        textvariable=about_var,
+        justify=LEFT,
+        anchor=E
+    )
+    about_text.grid(row=row, column=0)
+
+    row+=1
+
+    github_link_button = tk.Button(
+        win,
+        text='See Wiki for more information',
+        command=callback)
+    github_link_button.grid(row=row, column=0)
+
+    row += 1
+
+    versionlabel = tk.Label(
+        win,
+        font=('freesans', 12, "bold"),
+        text='Version: ' + version,
+        justify=LEFT,
+        anchor=E)
+    versionlabel.grid(row=row, column=0)
+
+ 
+    row += 1
+
+    copyrightlabel = tk.Label(
+        win,
+        font=('freesans', 12, "bold"),
+        text='Copyright 2019 Bret Cadle',
+        justify=LEFT,
+        anchor=E)
+    copyrightlabel.grid(row=row, column=0)
+
+    row += 1
+
+    close_about_button = tk.Button(
+        win,
+        text='Close Window',
+        command=close_about)
+    close_about_button.grid(row=row, column=0)
+
 
 
 # Set the window title bar text
@@ -485,7 +574,7 @@ editmenu.add_command(label="Settings", command=settings)
 menubar.add_cascade(label="Edit", menu=editmenu)
 helpmenu = Menu(menubar, tearoff=0)
 
-helpmenu.add_command(label="About...", command=donothing)
+helpmenu.add_command(label="About...", command=about_page)
 menubar.add_cascade(label="Help", menu=helpmenu)
 
 root.config(menu=menubar)
