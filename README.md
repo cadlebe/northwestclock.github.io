@@ -143,12 +143,10 @@ I have not yet come up with a code of conduct for contributing, though if you wo
 
 # License
 
-This project is licensed under the GPL-3.0+ License - see the LICENSE.md file for details.
+This project is licensed under the GPL-3.0+ License - see the license [here](../LICENSE.md).
 
 # Future Changes
 
-### Soon
-- Ability to change font
-- More items for weather display (wind, direction, humidity, etc.)
+[See upcoming projects!](https://github.com/cadlebe/northwestclock.github.io/projects)
 
 <p style="text-align: center;">Copyright &copy2017 Bret Cadle</p>
