@@ -1,5 +1,4 @@
-# NWClock v 0.2.9
-### Copyright 2017 Bret Cadle
+# NWClock v 0.2.10
 
 This is a simple clock that displays UTC and current temp. It currently has a settings menu for changing the fontsize for the clock, date, and weather.
 
@@ -7,22 +6,59 @@ This is a simple clock that displays UTC and current temp. It currently has a se
 
 What you need on your system in order to install:
 
-- Ubuntu 12.04 or later
-- Python 3.6+
-- At least a Core i3 processor
-- 256mb RAM
+- Linux or Windows
+- Python 3.7+ (Python 3.5+ will probably work)
+- x86 or ARM processor (see Starting Clock: From Source)
 
-## Installing
+## Starting Clock
 
-### Manual Installation
-1. Download the dist/clock file for your operating system
-2. Extract the .zip file or file to any location that you have read-write access
-3. Navigate to the newly extracted directory
-4. Double-Click on clock application
+### Run Binary:
+1. Download the [binary file](https://github.com/cadlebe/northwestclock.github.io/releases) for your os/processor. 
+2. Extract the .zip file or file to any location that you have read-write access.
+3. Navigate to the newly extracted directory.
+4. Double-Click on clock application.
+
+### From Source:
+
+##### BASH (Linux)
+
+```` bash
+git clone git@github.com:cadlebe/northwestclock.github.io.git nwclock
+cd nwclock
+virtualenv --python="/path/to/python3.7.x" env
+source env/bin/activate
+pip install pipreqs
+pipreqs /path/to/nwclock
+python build.py
+````
+
+##### PowerShell (windows)
+
+```` Powershell
+git clone git@github.com:cadlebe/northwestclock.github.io.git nwclock
+cd nwclock
+virtualenv --python="/path/to/python3.7.x" env
+./env/Scripts/activate.ps1
+pip install pipreqs
+pipreqs /path/to/nwclock
+python build.py
+````
+
+- Run the binary from dist/northwest-clock-X_X_x
+
+#### Running in Fullscreen
+
+To run northwest-clock in fullscreen:
+
+```` bash
+northwest-clock --fullscreen
+````
+
+Otherwise pressing F11 once clock is running will suffice.
 
 ## Configuration
 
-Configuration is done via both the in-app settings menu and the config file. It is located in ~/.config/northwest-clock/config.ini
+Configuration is done via both the in-app settings menu and the config file. The file is located in ~/.config/northwest-clock/config.ini
 
 Default configuration settings:
 
@@ -107,11 +143,10 @@ I have not yet come up with a code of conduct for contributing, though if you wo
 
 # License
 
-This project is licensed under the GPL-3.0+ License - see the LICENSE.md file for details.
+This project is licensed under the GPL-3.0+ License - see the license [here](../master/LICENSE).
 
 # Future Changes
 
-### Soon
-- Ability to change background and foreground colors
-- Ability to change font
-- More items for weather display (wind, direction, humidity, etc.)
+[See upcoming projects!](https://github.com/cadlebe/northwestclock.github.io/projects)
+
+<p style="text-align: center;">Copyright &copy2017 Bret Cadle</p>
