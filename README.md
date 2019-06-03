@@ -143,7 +143,7 @@ I have not yet come up with a code of conduct for contributing, though if you wo
 
 # License
 
-This project is licensed under the GPL-3.0+ License - see the license [here](../LICENSE.md).
+This project is licensed under the GPL-3.0+ License - see the license [here](../master/LICENSE.md).
 
 # Future Changes
 
