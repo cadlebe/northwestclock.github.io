@@ -450,6 +450,10 @@ def about_page():
     row = 0
 
     if hasattr(sys, "_MEIPASS"):
+        """ Ignore sys._MEIPASS error, pyinstaller compiles just fine and about
+        page functions once binary is build and run.
+        TODO: fix sys._MEIPASS error before compiling. For now this works
+        despite error """
         description_data = os.path.join(sys._MEIPASS, 'description')
     else:
         description_data = 'description'
