@@ -1,23 +1,12 @@
-import time
-import pytz
-from time import gmtime
 # Development uncomment:
 # from tkinter import *
 # Release uncomment:
 from tkinter import Button, Label, Canvas, Toplevel, E, W, N, S, Entry, StringVar, Message, LEFT, Menu
-
 from datetime import datetime, timedelta
 from pytz import timezone
 import pytz
 import webbrowser
-
-import appdirs
-import packaging
-import packaging.requirements
-import packaging.specifiers
-import packaging.version
 import pyowm
-import six
 import argparse
 import configuration
 import os.path
