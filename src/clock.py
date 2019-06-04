@@ -10,6 +10,7 @@ import pyowm
 import argparse
 import configuration
 import os.path
+import sys
 
 try:
     # Python2
@@ -448,7 +449,11 @@ def about_page():
     win.wm_title('About')
     row = 0
 
-    description_file = open("description", "rt")
+    if hasattr(sys, "_MEIPASS"):
+        description_data = os.path.join(sys._MEIPASS, 'description')
+    else:
+        description_data = 'description'
+    description_file = open(description_data, "rt")
     desc_text = description_file.read()
     description_file.close()
 
