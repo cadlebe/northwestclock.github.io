@@ -24,7 +24,7 @@ config_vars = vars(configuration.Configuration())
 path_to_config = config_vars.get('path_to_config')
 timefmt = '%H:%M:%S %Z'
 datefmt = '%Y-%m-%d'
-version = '0210'
+version = '0211'
 
 # Check if this is the first time running the app, if yes then create default ini
 if os.path.isfile(path_to_config + 'config.ini'):

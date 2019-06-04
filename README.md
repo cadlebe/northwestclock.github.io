@@ -1,4 +1,4 @@
-# NWClock v 0.2.10
+# NWClock v 0.2.11
 
 This is a simple clock that displays UTC and current temp. It currently has a settings menu for changing the fontsize for the clock, date, and weather.
 
