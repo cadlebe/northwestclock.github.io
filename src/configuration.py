@@ -1,6 +1,5 @@
 import configparser
 import os.path
-import os.path
 import getpass
 
 class Configuration(object):
