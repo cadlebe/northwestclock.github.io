@@ -2,7 +2,7 @@ import os.path
 import subprocess
 
 app_name = "northwest-clock"
-version = "v0_2_10"
+version = "v0_2_11"
 directory_name = app_name + "-" + version
 dist_path = "dist/" + directory_name
 work_path = "build/" + directory_name
@@ -17,6 +17,7 @@ else:
                       '--add-data=LICENSE:.',
                       '--add-data=README.md:.',
                       '--add-data=northwest-clock.service:.',
+                      '--add-data=src/description:.',
                       '--distpath=' + dist_path,
                       '--workpath=' + work_path,
                       '--clean',

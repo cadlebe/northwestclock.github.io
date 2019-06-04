@@ -1,26 +1,16 @@
-import time
-import pytz
-from time import gmtime
 # Development uncomment:
 # from tkinter import *
 # Release uncomment:
 from tkinter import Button, Label, Canvas, Toplevel, E, W, N, S, Entry, StringVar, Message, LEFT, Menu
-
 from datetime import datetime, timedelta
 from pytz import timezone
 import pytz
 import webbrowser
-
-import appdirs
-import packaging
-import packaging.requirements
-import packaging.specifiers
-import packaging.version
 import pyowm
-import six
 import argparse
 import configuration
 import os.path
+import sys
 
 try:
     # Python2
@@ -34,7 +24,7 @@ config_vars = vars(configuration.Configuration())
 path_to_config = config_vars.get('path_to_config')
 timefmt = '%H:%M:%S %Z'
 datefmt = '%Y-%m-%d'
-version = '0210'
+version = '0211'
 
 # Check if this is the first time running the app, if yes then create default ini
 if os.path.isfile(path_to_config + 'config.ini'):
@@ -459,7 +449,15 @@ def about_page():
     win.wm_title('About')
     row = 0
 
-    description_file = open("description", "rt")
+    if hasattr(sys, "_MEIPASS"):
+        """ Ignore sys._MEIPASS error, pyinstaller compiles just fine and about
+        page functions once binary is build and run.
+        TODO: fix sys._MEIPASS error before compiling. For now this works
+        despite error """
+        description_data = os.path.join(sys._MEIPASS, 'description')
+    else:
+        description_data = 'description'
+    description_file = open(description_data, "rt")
     desc_text = description_file.read()
     description_file.close()
 
