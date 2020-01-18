@@ -1,7 +1,9 @@
+altgraph==0.17
 certifi==2019.11.28
 chardet==3.0.4
 geojson==2.5.0
 idna==2.8
+PyInstaller==3.6
 pyowm==2.10.0
 pytz==2019.3
 requests==2.22.0
