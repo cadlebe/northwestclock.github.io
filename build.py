@@ -2,7 +2,7 @@ import os.path
 import subprocess
 
 app_name = "northwest-clock"
-version = "v0_2_11"
+version = "v0_2_13"
 directory_name = app_name + "-" + version
 dist_path = "dist/" + directory_name
 work_path = "build/" + directory_name
