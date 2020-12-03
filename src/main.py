@@ -1,9 +1,6 @@
 # Development uncomment:
 # from tkinter import *
 # Release uncomment:
-from tkinter import Button, Label, Canvas, Toplevel, E, W, N, S, Entry, StringVar, Message, LEFT, Menu
-from datetime import datetime, timedelta
-from pytz import timezone
 import pytz
 import webbrowser
 import pyowm
@@ -11,6 +8,10 @@ import argparse
 import configuration
 import os.path
 import sys
+
+from tkinter import Button, Label, Canvas, Toplevel, E, W, N, S, Entry, StringVar, Message, LEFT, Menu
+from datetime import datetime, timedelta
+from pytz import timezone
 
 try:
     # Python2
