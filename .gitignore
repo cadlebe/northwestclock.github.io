@@ -1,4 +1,4 @@
-env_current
+env*
 build
 dist
 northwest-clock.spec
