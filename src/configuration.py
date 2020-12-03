@@ -75,7 +75,7 @@ class Configuration(object):
     def setTimezone(self, option):
         self.config.set(self.timezone, 'timezone', option)
         self.SetConfigFile()
-    
+
     def setWeatherLocation(self, option):
         self.config.set(self.weatherlocation, 'weather location', option)
         self.SetConfigFile()
@@ -92,7 +92,7 @@ class Configuration(object):
     def getTitleText(self):
         title_text = self.config.get(self.titletext, 'titletext')
         return title_text
-    
+
     def getApiKey(self):
         api_key = self.config.get(self.api_key, 'openweather api key')
         return api_key
@@ -100,7 +100,7 @@ class Configuration(object):
     def getTimezone(self):
         timezone = self.config.get(self.timezone, 'timezone')
         return timezone
-    
+
     def getWeatherLocation(self, option):
         weatherlocation = self.config.get(self.weatherlocation, 'weather location')
         return weatherlocation
