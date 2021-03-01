@@ -9,7 +9,21 @@ import configuration
 import os.path
 import sys
 
-from tkinter import Button, Label, Canvas, Toplevel, E, W, N, S, Entry, StringVar, Message, LEFT, Menu
+from tkinter import (
+    Button,
+    Label,
+    Canvas,
+    Toplevel,
+    E,
+    W,
+    N,
+    S,
+    Entry,
+    StringVar,
+    Message,
+    LEFT,
+    Menu,
+)
 from datetime import datetime, timedelta
 from pytz import timezone
 
@@ -20,34 +34,39 @@ except ImportError:
     # Python3
     import tkinter as tk
 
+
 def main():
     config = configuration.Configuration()
     config_vars = vars(configuration.Configuration())
-    path_to_config = config_vars.get('path_to_config')
-    timefmt = '%H:%M:%S %Z'
-    datefmt = '%Y-%m-%d'
-    version = '0211'
+    path_to_config = config_vars.get("path_to_config")
+    timefmt = "%H:%M:%S %Z"
+    datefmt = "%Y-%m-%d"
+    version = "0211"
 
     # Check if this is the first time running the app, if yes then create default ini
-    if os.path.isfile(path_to_config + 'config.ini'):
+    if os.path.isfile(path_to_config + "config.ini"):
         config.ReadConfigFile()
         if config.getFirstRun() == True:
             config.SetDefaultConfigFile()
-            config.setFirstRun('false')
+            config.setFirstRun("false")
     else:
         config.SetDefaultConfigFile()
-        config.setFirstRun('false')
+        config.setFirstRun("false")
 
     # Default label attributes
-    datefontsize = config.getFontsize('date')
-    clockfontsize = config.getFontsize('clock')
-    weatherfontsize = config.getFontsize('weather')
+    datefontsize = config.getFontsize("date")
+    clockfontsize = config.getFontsize("clock")
+    weatherfontsize = config.getFontsize("weather")
     timezones_common = pytz.common_timezones
 
     state = False
 
-    parser = argparse.ArgumentParser(description='Northwest Clock - UTC')
-    parser.add_argument('--fullscreen', help='Opens app in full screen, usefull for displays that have no keyboard and mouse.', action='store_true')
+    parser = argparse.ArgumentParser(description="Northwest Clock - UTC")
+    parser.add_argument(
+        "--fullscreen",
+        help="Opens app in full screen, usefull for displays that have no keyboard and mouse.",
+        action="store_true",
+    )
     args = parser.parse_args()
     if args.fullscreen:
         state = True
@@ -65,7 +84,7 @@ def main():
         currenttime = timeUTC.astimezone(timezone)
         return currenttime
 
-    def tick(time1=''):
+    def tick(time1=""):
         """ This module checks for the current UTC time every 200ms """
         time2 = currenttime()
         # if time string has changed, update it
@@ -77,8 +96,7 @@ def main():
         # to update the time display as needed
         clock.after(200, tick)
 
-
-    def dateutc(date1=''):
+    def dateutc(date1=""):
         """ Checks current date at UTC every 200ms """
         # get Date at UTC
         date2 = currenttime()
@@ -91,24 +109,23 @@ def main():
         # to update the date display as needed
         date.after(200, dateutc)
 
-
-    def tempcheck(temp1=''):
+    def tempcheck(temp1=""):
         """ Using OWM, checks for temperature every 10000ms """
         apikey = str(config.getApiKey())
-        weather_location = str(config.getWeatherLocation('weather location'))
+        weather_location = str(config.getWeatherLocation("weather location"))
         try:
             # API key for Open Weather Map
             owm = pyowm.OWM(API_key=apikey)
             # Get weather for seattle, all of it
             observation = owm.weather_at_place(weather_location)
-            #observation = owm.weather_at_place('Seattle, US')
+            # observation = owm.weather_at_place('Seattle, US')
             w = observation.get_weather()
-            currenttemp = w.get_temperature('fahrenheit')
-            temp2 = currenttemp['temp']
+            currenttemp = w.get_temperature("fahrenheit")
+            temp2 = currenttemp["temp"]
 
             if temp2 != temp1:
                 temp1 = temp2
-                weather.config(text=str(int(temp1)) + ' F')
+                weather.config(text=str(int(temp1)) + " F")
             weather.after(10000, tempcheck)
             return temp2
         except:
@@ -116,10 +133,7 @@ def main():
             weather.config(text=error)
             return error
 
-
-
     root = tk.Tk()
-
 
     # Sample button donothing
     def donothing():
@@ -128,12 +142,11 @@ def main():
         button = Button(filewin, text="Do nothing button")
         button.pack()
 
-
     # Settings menu button
     def settings():
         """ Opens settings window """
         win = Toplevel(root)
-        win.wm_title('Settings')
+        win.wm_title("Settings")
 
         def close_settings():
             win.destroy()
@@ -148,10 +161,10 @@ def main():
             """ Assigns new bgcolor size to title label """
             newbgcolor = titlebgcolorentry.get()
             nwclockapp.config(bg=newbgcolor)
-            config.setColor('titlebackground', newbgcolor)
+            config.setColor("titlebackground", newbgcolor)
 
         """def settitlefont():
-            """" Assigns new font size to title label """"
+            """ " Assigns new font size to title label " """
             newfontsize = titlefontentry.get()
             title.config(font=('freesans', newfontsize, 'bold')) """
 
@@ -159,42 +172,38 @@ def main():
         def setclockfont():
             """ Assigns new font size to clock label """
             newfontsize = clockfontentry.get()
-            clock.config(font=(
-                'freesans',
-                newfontsize, 'bold'))
-            config.SetFontSize('clock', newfontsize)
+            clock.config(font=("freesans", newfontsize, "bold"))
+            config.SetFontSize("clock", newfontsize)
 
         def setdatefont():
             """ Assigns new font size to date label """
             newfontsize = datefontentry.get()
-            date.config(font=(
-                'freesans',
-                newfontsize, 'bold'))
-            config.SetFontSize('date', newfontsize)
+            date.config(font=("freesans", newfontsize, "bold"))
+            config.SetFontSize("date", newfontsize)
 
         def setweatherfont():
             """ Assigns new font size to weather label """
             newfontsize = weatherfontentry.get()
-            weather.config(font=('freesans', newfontsize, 'bold'))
-            config.SetFontSize('weather', newfontsize)
+            weather.config(font=("freesans", newfontsize, "bold"))
+            config.SetFontSize("weather", newfontsize)
 
         def setdatebgcolor():
             """ Assigns new background color to date label """
             newbgcolor = datebgcolorentry.get()
             date.config(bg=newbgcolor)
-            config.setColor('date', newbgcolor)
+            config.setColor("date", newbgcolor)
 
         def setclockbgcolor():
             """ Assigns new background color to clock label """
             newbgcolor = clockbgcolorentry.get()
             clock.config(bg=newbgcolor)
-            config.setColor('clock', newbgcolor)
+            config.setColor("clock", newbgcolor)
 
         def setweatherbgcolor():
             """ Assigns new background color to weather label """
             newbgcolor = weatherbgcolorentry.get()
             weather.config(bg=newbgcolor)
-            config.setColor('weather', newbgcolor)
+            config.setColor("weather", newbgcolor)
 
         def setapikey():
             """ Allows user to set api for openweather if desired """
@@ -206,7 +215,7 @@ def main():
             timezones = pytz.all_timezones
             if timezone in timezones:
                 config.setTimezone(timezone)
-                timezoneerror.config(text='')
+                timezoneerror.config(text="")
             else:
                 error = "Invalid Timezone!"
                 timezoneerror.config(text=error)
@@ -224,175 +233,136 @@ def main():
             config.setTitleText(newtitletext)
 
             """ Assigns new bgcolor size to title label """
-            newbgcolor = config.getColor('titlebackground')
+            newbgcolor = config.getColor("titlebackground")
             nwclockapp.config(bg=newbgcolor)
 
             """ Assigns new font size to clock label """
-            newfontsize = config.getFontsize('clock')
-            clock.config(font=(
-                'freesans',
-                newfontsize, 'bold'))
+            newfontsize = config.getFontsize("clock")
+            clock.config(font=("freesans", newfontsize, "bold"))
 
             """ Assigns new font size to date label """
-            newfontsize = config.getFontsize('date')
-            date.config(font=(
-                'freesans',
-                newfontsize, 'bold'))
+            newfontsize = config.getFontsize("date")
+            date.config(font=("freesans", newfontsize, "bold"))
 
             """ Assigns new font size to weather label """
-            newfontsize = config.getFontsize('weather')
-            weather.config(font=('freesans', newfontsize, 'bold'))
+            newfontsize = config.getFontsize("weather")
+            weather.config(font=("freesans", newfontsize, "bold"))
 
             """ Assigns new background color to date label """
-            newbgcolor = config.getColor('datebackground')
+            newbgcolor = config.getColor("datebackground")
             date.config(bg=newbgcolor)
 
             """ Assigns new background color to clock label """
-            newbgcolor = config.getColor('clockbackground')
+            newbgcolor = config.getColor("clockbackground")
             clock.config(bg=newbgcolor)
 
             """ Assigns new background color to weather label """
-            newbgcolor = config.getColor('weatherbackground')
+            newbgcolor = config.getColor("weatherbackground")
             weather.config(bg=newbgcolor)
 
         # Create and position Labels in Grid
-        titletextlabel = tk.Label(
-            win,
-            text='Title Text',
-            anchor=E)
+        titletextlabel = tk.Label(win, text="Title Text", anchor=E)
         titletextlabel.grid(row=0, column=0)
 
-        titlebgcolorlabel = tk.Label(
-            win,
-            text='Title Background Color',
-            anchor=E)
+        titlebgcolorlabel = tk.Label(win, text="Title Background Color", anchor=E)
         titlebgcolorlabel.grid(row=1, column=0)
 
-        datefontsizelabel = tk.Label(
-            win,
-            text='Date Fontsize',
-            anchor=E)
+        datefontsizelabel = tk.Label(win, text="Date Fontsize", anchor=E)
         datefontsizelabel.grid(row=2, column=0)
 
-        clockfontsizelabel = tk.Label(
-            win,
-            text='Clock Fontsize',
-            anchor=E)
+        clockfontsizelabel = tk.Label(win, text="Clock Fontsize", anchor=E)
         clockfontsizelabel.grid(row=3, column=0)
 
         weatherfontsizelabel = tk.Label(
             win,
-            text='Weather Fontsize',
-            anchor=E,)
+            text="Weather Fontsize",
+            anchor=E,
+        )
         weatherfontsizelabel.grid(row=4, column=0)
 
         datebgcolorlabel = tk.Label(
             win,
-            text='Date bgcolor',
-            anchor=E,)
+            text="Date bgcolor",
+            anchor=E,
+        )
         datebgcolorlabel.grid(row=5, column=0)
 
         clockbgcolorlabel = tk.Label(
             win,
-            text='Clock bgcolor',
-            anchor=E,)
+            text="Clock bgcolor",
+            anchor=E,
+        )
         clockbgcolorlabel.grid(row=6, column=0)
 
         weatherbgcolorlabel = tk.Label(
             win,
-            text='Weather bgcolor',
-            anchor=E,)
+            text="Weather bgcolor",
+            anchor=E,
+        )
         weatherbgcolorlabel.grid(row=7, column=0)
 
         apikeylabel = tk.Label(
             win,
-            text='Openweather API Key',
-            anchor=E,)
+            text="Openweather API Key",
+            anchor=E,
+        )
         apikeylabel.grid(row=8, column=0)
 
         timezonelabel = tk.Label(
             win,
-            text='Timezone',
-            anchor=E,)
+            text="Timezone",
+            anchor=E,
+        )
         timezonelabel.grid(row=9, column=0)
 
         timezoneerror = tk.Label(
             win,
-            anchor=E,)
+            anchor=E,
+        )
         timezoneerror.grid(row=9, column=3)
 
         weatherlocationlabel = tk.Label(
             win,
-            text='Weather Location',
-            anchor=E,)
+            text="Weather Location",
+            anchor=E,
+        )
         weatherlocationlabel.grid(row=10, column=0)
 
         loaddefaultslabel = tk.Label(
             win,
-            text='Load Defaults',
-            anchor=E,)
+            text="Load Defaults",
+            anchor=E,
+        )
         loaddefaultslabel.grid(row=11, column=0)
 
         # Create Buttons
-        titletextconfirm = tk.Button(
-            win,
-            text='confirm',
-            command=settitletext)
+        titletextconfirm = tk.Button(win, text="confirm", command=settitletext)
 
-        titlebgcolorconfirm = tk.Button(
-            win,
-            text='confirm',
-            command=settitlebgcolor)
+        titlebgcolorconfirm = tk.Button(win, text="confirm", command=settitlebgcolor)
 
-        datefontconfirm = tk.Button(
-            win,
-            text='confirm',
-            command=setdatefont)
+        datefontconfirm = tk.Button(win, text="confirm", command=setdatefont)
 
-        clockfontconfirm = tk.Button(
-            win,
-            text='confirm',
-            command=setclockfont)
+        clockfontconfirm = tk.Button(win, text="confirm", command=setclockfont)
 
-        weatherfontconfirm = tk.Button(
-            win,
-            text='confirm',
-            command=setweatherfont)
+        weatherfontconfirm = tk.Button(win, text="confirm", command=setweatherfont)
 
-        datebgcolorconfirm = tk.Button(
-            win,
-            text='confirm',
-            command=setdatebgcolor)
+        datebgcolorconfirm = tk.Button(win, text="confirm", command=setdatebgcolor)
 
-        clockbgcolorconfirm = tk.Button(
-            win,
-            text='confirm',
-            command=setclockbgcolor)
+        clockbgcolorconfirm = tk.Button(win, text="confirm", command=setclockbgcolor)
 
         weatherbgcolorconfirm = tk.Button(
-            win,
-            text='confirm',
-            command=setweatherbgcolor)
+            win, text="confirm", command=setweatherbgcolor
+        )
 
-        apikeyconfirm = tk.Button(
-            win,
-            text='confirm',
-            command=setapikey)
+        apikeyconfirm = tk.Button(win, text="confirm", command=setapikey)
 
-        timezoneconfirm = tk.Button(
-            win,
-            text='confirm',
-            command=settimezone)
+        timezoneconfirm = tk.Button(win, text="confirm", command=settimezone)
 
-        weatherlocationconfirm =  tk.Button(
-            win,
-            text='confirm',
-            command=setweatherlocation)
+        weatherlocationconfirm = tk.Button(
+            win, text="confirm", command=setweatherlocation
+        )
 
-        loaddefaultsconfirm = tk.Button(
-            win,
-            text='confirm',
-            command=setdefaults)
+        loaddefaultsconfirm = tk.Button(win, text="confirm", command=setdefaults)
 
         # create Entry Spaces
         titletextentry = Entry(win)
@@ -438,9 +408,8 @@ def main():
         loaddefaultsconfirm.grid(row=11, column=1)
 
         close_about_button = tk.Button(
-            win,
-            text='Exit without save',
-            command=close_settings)
+            win, text="Exit without save", command=close_settings
+        )
         close_about_button.grid(row=12, column=0)
 
         # TODO: consider using a tabbed notebook here when settings page
@@ -448,17 +417,17 @@ def main():
 
     def about_page():
         win = Toplevel(root)
-        win.wm_title('About')
+        win.wm_title("About")
         row = 0
 
         if hasattr(sys, "_MEIPASS"):
-            """ Ignore sys._MEIPASS error, pyinstaller compiles just fine and about
+            """Ignore sys._MEIPASS error, pyinstaller compiles just fine and about
             page functions once binary is build and run.
             TODO: fix sys._MEIPASS error before compiling. For now this works
-            despite error """
-            description_data = os.path.join(sys._MEIPASS, 'description')
+            despite error"""
+            description_data = os.path.join(sys._MEIPASS, "description")
         else:
-            description_data = 'description'
+            description_data = "description"
         description_file = open(description_data, "rt")
         desc_text = description_file.read()
         description_file.close()
@@ -467,102 +436,113 @@ def main():
         about_var.set(desc_text)
 
         def callback():
-            webbrowser.open_new_tab(r"https://github.com/cadlebe/northwestclock.github.io/wiki")
+            webbrowser.open_new_tab(
+                r"https://github.com/cadlebe/northwestclock.github.io/wiki"
+            )
 
         def close_about():
             win.destroy()
 
         abouttitlelabel = tk.Label(
             win,
-            font=('freesans', 24, "bold",),
-            text='About',
+            font=(
+                "freesans",
+                24,
+                "bold",
+            ),
+            text="About",
             justify=LEFT,
-            anchor=E)
+            anchor=E,
+        )
         abouttitlelabel.grid(row=row, column=0)
 
-        row+=1
+        row += 1
 
         about_text = Message(
             win,
-            font=('freesans', 16,),
+            font=(
+                "freesans",
+                16,
+            ),
             textvariable=about_var,
             justify=LEFT,
-            anchor=E
+            anchor=E,
         )
         about_text.grid(row=row, column=0)
 
-        row+=1
+        row += 1
 
         github_link_button = tk.Button(
-            win,
-            text='See Wiki for more information',
-            command=callback)
+            win, text="See Wiki for more information", command=callback
+        )
         github_link_button.grid(row=row, column=0)
 
         row += 1
 
         versionlabel = tk.Label(
             win,
-            font=('freesans', 12, "bold"),
-            text='Version: ' + version,
+            font=("freesans", 12, "bold"),
+            text="Version: " + version,
             justify=LEFT,
-            anchor=E)
+            anchor=E,
+        )
         versionlabel.grid(row=row, column=0)
-
 
         row += 1
 
         copyrightlabel = tk.Label(
             win,
-            font=('freesans', 12, "bold"),
-            text='Copyright 2019 Bret Cadle',
+            font=("freesans", 12, "bold"),
+            text="Copyright 2019 Bret Cadle",
             justify=LEFT,
-            anchor=E)
+            anchor=E,
+        )
         copyrightlabel.grid(row=row, column=0)
 
         row += 1
 
-        close_about_button = tk.Button(
-            win,
-            text='Close Window',
-            command=close_about)
+        close_about_button = tk.Button(win, text="Close Window", command=close_about)
         close_about_button.grid(row=row, column=0)
-
-
 
     # Set the window title bar text
     root.wm_title(config.getTitleText())
     nwclockapp = tk.Label(
         root,
-        font=('TakaoPGothic', 50,),
-        bg=config.getColor('titlebackground'),
-        fg=config.getColor('titleforeground'),
-        anchor='w',)
+        font=(
+            "TakaoPGothic",
+            50,
+        ),
+        bg=config.getColor("titlebackground"),
+        fg=config.getColor("titleforeground"),
+        anchor="w",
+    )
     nwclockapp.config(text=config.getTitleText())
     # Set clock label text
-    nwclockapp.pack(fill='both', expand=1)
+    nwclockapp.pack(fill="both", expand=1)
     date = tk.Label(
         root,
-        font=('freesans', datefontsize, 'bold'),
-        bg=config.getColor('datebackground'),
-        fg=config.getColor('dateforeground'))
-    date.pack(fill='both', expand=1)
+        font=("freesans", datefontsize, "bold"),
+        bg=config.getColor("datebackground"),
+        fg=config.getColor("dateforeground"),
+    )
+    date.pack(fill="both", expand=1)
     clock = tk.Label(
         root,
-        font=('freesans', clockfontsize, 'bold'),
-        bg=config.getColor('clockbackground'),
-        fg=config.getColor('clockforeground'))
-    clock.pack(fill='both', expand=1)
+        font=("freesans", clockfontsize, "bold"),
+        bg=config.getColor("clockbackground"),
+        fg=config.getColor("clockforeground"),
+    )
+    clock.pack(fill="both", expand=1)
     # Set weather label text
     weather = tk.Label(
         root,
-        font=('freesans', weatherfontsize, 'bold'),
-        bg=config.getColor('weatherbackground'),
-        fg=config.getColor('weatherforeground')
+        font=("freesans", weatherfontsize, "bold"),
+        bg=config.getColor("weatherbackground"),
+        fg=config.getColor("weatherforeground"),
     )
     temperature = tempcheck()
     if temperature != "network error":
-        weather.pack(fill='both', expand=1)
+        weather.pack(fill="both", expand=1)
     else:
         print(temperature)
 
@@ -590,6 +570,7 @@ def main():
     dateutc()
     tick()
     root.mainloop()
+
 
 if __name__ == "__main__":
     main()
