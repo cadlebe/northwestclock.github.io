@@ -1,6 +1,7 @@
 import configparser
 import os.path
 import getpass
+from pathlib import Path
 
 class Configuration(object):
     def __init__(self):
@@ -14,7 +15,7 @@ class Configuration(object):
         self.timezone = 'TIMEZONE'
         self.weatherlocation = 'WEATHER'
         self.user = getpass.getuser()
-        self.path_to_config = str("/home/" + self.user + "/.config/northwest-clock/")
+        self.path_to_config = str(str(Path.home()) + "/.config/northwest-clock/")
 
     def __str__(self):
         return str(self.path_to_config + self.config)
