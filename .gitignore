@@ -1,7 +1,7 @@
-env_current
+env*
 build
 dist
 northwest-clock.spec
-nwclock.code-workspace
 src/__pycache__
-
+.DS_Store
+*.code-workspace
