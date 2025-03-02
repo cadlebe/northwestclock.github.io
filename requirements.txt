@@ -9,7 +9,7 @@ idna==2.8
 macholib==1.14
 mypy-extensions==0.4.3
 pathspec==0.8.1
-PyInstaller==3.6
+PyInstaller==6.10.0
 pyowm==2.10.0
 pytz==2019.3
 regex==2020.11.13
